@@ -115,3 +115,4 @@ const componentsData = {
         { id: 6, name: '🚀 High-End Gaming', description: '4K Gaming Ultra Settings', price: 5000, type: 'gaming', affiliateLink: 'https://affiliate.example.com/pc/highend' }
     ]
 };
+
