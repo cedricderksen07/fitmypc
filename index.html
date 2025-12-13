@@ -1,6 +1,81 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+    <!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Cookie Consent</title>
+<style>
+  #cookieConsent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #222;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+  }
+  #cookieConsent button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+  #cookieConsent button.accept { background: #4CAF50; color: white; }
+  #cookieConsent button.reject { background: #f44336; color: white; }
+</style>
+</head>
+<body>
+
+<div id="cookieConsent">
+  <span>Wir verwenden Cookies, um die Nutzererfahrung zu verbessern. Akzeptierst du Google Analytics?</span>
+  <div>
+    <button class="accept">Zustimmen</button>
+    <button class="reject">Ablehnen</button>
+  </div>
+</div>
+
+<script>
+  // Prüfen, ob bereits eine Entscheidung gespeichert ist
+  if (localStorage.getItem('cookieConsent')) {
+    document.getElementById('cookieConsent').style.display = 'none';
+    if (localStorage.getItem('cookieConsent') === 'accepted') {
+      loadGoogleAnalytics();
+    }
+  }
+
+  // Funktion für Google Analytics laden
+  function loadGoogleAnalytics() {
+    // Beispiel: GA4
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-DEINE-ID', 'auto'); // Deine GA-ID
+    ga('send', 'pageview');
+  }
+
+  document.querySelector('#cookieConsent .accept').addEventListener('click', function() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    document.getElementById('cookieConsent').style.display = 'none';
+    loadGoogleAnalytics();
+  });
+
+  document.querySelector('#cookieConsent .reject').addEventListener('click', function() {
+    localStorage.setItem('cookieConsent', 'rejected');
+    document.getElementById('cookieConsent').style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Konfigurator</title>
