@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YFM6ZCS2VX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YFM6ZCS2VX');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Konfigurator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">
+   
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="hamburger-btn" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🖥️</span>
+                    <span class="logo-text">Fit_my_PC</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <div class="language-selector">
+                    <label for="languageSelect" data-i18n="nav_language">Sprache:</label>
+                    <select id="languageSelect" onchange="changeLanguage(this.value)">
+                        <option value="de">Deutsch</option>
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="es">Español</option>
+                        <option value="it">Italiano</option>
+                        <option value="nl">Nederlands</option>
+                        <option value="pt">Português</option>
+                    </select>
+                </div>
+                <a href="account.html" class="account-link" data-i18n="nav_account">👤 Mein Konto</a>
+            </div>
+        </nav>
+
+        <!-- Navigation Menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+        <div class="menu-panel" id="menuPanel">
+            <div class="menu-header">
+                <h2>Menü</h2>
+                <button class="menu-close" onclick="closeMenu()">×</button>
+            </div>
+            <ul class="menu-items">
+                <li><a href="index.html#" onclick="scrollToSection('pc-type', closeMenu())">PC-Typ wählen</a></li>
+
+                <li><a href="index.html#" onclick="scrollToSection('components', closeMenu())">Komponenten</a></li>
+                <li><a href="index.html#" onclick="scrollToSection('cases', closeMenu())">Gehäuse</a></li>
+                <li><a href="index.html#" onclick="scrollToSection('accessories', closeMenu())">Zubehör</a></li>
+                <li><a href="prebuilt-pcs.html" onclick="closeMenu()">Fertig-PCs</a></li>
+                <li><a href="datenschutz.html" onclick="closeMenu()">Datenschutz</a></li>
+                <li><a href="impressum.html" onclick="closeMenu()">Impressum</a></li>
+            </ul>
+        </div>
+
+        <!-- Header -->
+        <header class="gaming-header">
+            <div class="header-content">
+                <h1 data-i18n="header_title">PC Konfigurator</h1>
+                <p class="tagline" data-i18n="header_subtitle">Zusammenstellung der optimalen Hardware-Lösung</p>
+            </div>
+            <div class="header-accent"></div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content gaming-content">
+            <!-- PC Type Selection -->
+            <section class="section" id="pc-type">
+                <h2 class="section-title" data-i18n="section_pc_type">PC-Typ wählen</h2>
+                <div class="pc-type-selector">
+                    <button class="pc-type-btn active" data-type="gaming" data-i18n="btn_gaming">🎮 Gaming PC</button>
+                    <button class="pc-type-btn" data-type="office" data-i18n="btn_office">💼 Office PC</button>
+                    <button class="pc-type-btn" data-type="workstation" data-i18n="btn_workstation">🖥️ Workstation</button>
+                    <button class="pc-type-btn" data-type="streaming" data-i18n="btn_streaming">🎥 Streaming</button>
+                    <button class="pc-type-btn" data-type="creator" data-i18n="btn_creator">✏️ Creator PC</button>
+                    <button class="pc-type-btn" data-type="budget" data-i18n="btn_budget">⚡ Budget</button>
+                </div>
+            </section>
+
+            <!-- Budget Builder Section -->
+            <section class="section" id="budgetSection">
+                <h2 class="section-title" data-i18n="section_budget">PC nach Budget bauen</h2>
+                <div class="budget-builder">
+                    <input type="number" id="budgetInput" data-i18n="input_budget" placeholder="Gib dein Budget ein (z.B. 1500)" min="0" step="50">
+                    <button id="budgetBtn" class="budget-btn" data-i18n="btn_budget_build">PC automatisch zusammenstellen</button>
+                    <div id="budgetResult" class="budget-result"></div>
+                </div>
+            </section>
+
+            <!-- Configurator Section -->
+            <section class="section" id="components">
+                <h2 class="section-title" data-i18n="section_configurator">PC zusammenstellen</h2>
+                
+                <button id="resetBtn" class="reset-btn" data-i18n="btn_reset">Zurücksetzen</button>
+
+                <!-- Case Selection Grid -->
+                <div class="case-selection-section" id="cases">
+                    <h3 class="case-selection-title" data-i18n="case_selection_title">1. Wählen Sie Ihr Gehäuse</h3>
+                    <div class="case-gallery-wrapper">
+                        <div class="case-gallery" id="caseGallery"></div>
+                    </div>
+                </div>
+
+                <!-- Component Selection Grid -->
+                <div class="configurator-grid">
+                    <!-- CPU -->
+                    <div class="component-group">
+                        <label for="cpu" data-i18n="label_cpu">⚙️ Prozessor (CPU)</label>
+                        <select id="cpu" data-component="cpu">
+                            <option value="" data-i18n="option_cpu">-- CPU auswählen --</option>
+                        </select>
+                        <div id="cpu-display" class="price-display"></div>
+                        <button id="cpu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Mainboard -->
+                    <div class="component-group">
+                        <label for="mainboard" data-i18n="label_mainboard">🖲️ Mainboard</label>
+                        <select id="mainboard" data-component="mainboard">
+                            <option value="" data-i18n="option_mainboard">-- Mainboard auswählen --</option>
+                        </select>
+                        <div id="mainboard-display" class="price-display"></div>
+                        <button id="mainboard-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- RAM -->
+                    <div class="component-group">
+                        <label for="ram" data-i18n="label_ram">💾 RAM</label>
+                        <select id="ram" data-component="ram">
+                            <option value="" data-i18n="option_ram">-- RAM auswählen --</option>
+                        </select>
+                        <div id="ram-display" class="price-display"></div>
+                        <button id="ram-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- GPU -->
+                    <div class="component-group">
+                        <label for="gpu" data-i18n="label_gpu">🎮 Grafikkarte (GPU)</label>
+                        <select id="gpu" data-component="gpu">
+                            <option value="" data-i18n="option_gpu">-- GPU auswählen --</option>
+                        </select>
+                        <div id="gpu-display" class="price-display"></div>
+                        <button id="gpu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- PSU -->
+                    <div class="component-group">
+                        <label for="psu" data-i18n="label_psu">⚡ Netzteil (PSU)</label>
+                        <select id="psu" data-component="psu">
+                            <option value="" data-i18n="option_psu">-- Netzteil auswählen --</option>
+                        </select>
+                        <div id="psu-display" class="price-display"></div>
+                        <button id="psu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Storage -->
+                    <div class="component-group">
+                        <label for="storage" data-i18n="label_storage">💿 Speicher (SSD/HDD)</label>
+                        <select id="storage" data-component="storage">
+                            <option value="" data-i18n="option_storage">-- Speicher auswählen --</option>
+                        </select>
+                        <div id="storage-display" class="price-display"></div>
+                        <button id="storage-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Case -->
+                    <div class="component-group">
+                        <label for="case" data-i18n="label_case">📦 Gehäuse</label>
+                        <select id="case" data-component="case">
+                            <option value="" data-i18n="option_case">-- Gehäuse auswählen --</option>
+                        </select>
+                        <div id="case-display" class="price-display"></div>
+                        <button id="case-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- CPU Cooler -->
+                    <div class="component-group">
+                        <label for="cooler" data-i18n="label_cooler">❄️ CPU-Kühler</label>
+                        <select id="cooler" data-component="cooler">
+                            <option value="" data-i18n="option_cooler">-- Kühler auswählen --</option>
+                        </select>
+                        <div id="cooler-display" class="price-display"></div>
+                        <button id="cooler-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+                </div>
+
+                <!-- Compatibility Checks -->
+                <div class="compatibility">
+                    <h3 style="margin-bottom: 20px; color: #1565c0;" data-i18n="compatibility_title">Kompatibilitätsprüfung</h3>
+                    <div id="compatibility"></div>
+                </div>
+
+                <!-- Summary Box -->
+                <div class="summary-box">
+                    <div id="summary"></div>
+                </div>
+
+                <!-- Complete Purchase Buttons -->
+                <div class="complete-purchase-buttons" style="display: none;">
+                    <button id="completeBtnPC" class="complete-purchase-btn" data-i18n="btn_complete_pc"></button>
+                    <button id="completeBtnFull" class="complete-purchase-btn complete-purchase-btn-full" data-i18n="btn_complete_full"></button>
+                </div>
+            </section>
+
+            <!-- Accessories Section -->
+            <section class="section" id="accessories">
+                <div class="section-title-wrapper">
+                    <h2 class="section-title" data-i18n="section_accessories">🛍️ Zubehör (Optional)</h2>
+                    <p class="accessories-note" data-i18n="accessories_note">siehe das vollständig vorhandene zubehör</p>
+                </div>
+                
+                <div class="accessories-container">
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_cables">Kabel</h3>
+                        <div id="cables-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_monitors">Monitore</h3>
+                        <div id="monitors-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Tastaturen</h3>
+                        <div id="keyboards-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Maus</h3>
+                        <div id="mice-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Headsets & Audio</h3>
+                        <div id="headsets-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_peripherals">Sonstiges Zubehör</h3>
+                        <div id="other-grid" class="accessories-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Accessories Summary -->
+                <div class="accessories-summary">
+                    <h3 data-i18n="accessories_selected">Gewähltes Zubehör</h3>
+                    <div id="accessories-selected-list"></div>
+                    <div id="accessories-total-price" class="accessories-total-price"></div>
+                </div>
+
+                <!-- Accessories Checkout Section -->
+                <div class="accessories-checkout-section" id="accessories-checkout-section" style="display: none;">
+                    <h3 class="accessories-checkout-title" data-i18n="checkout_title">Gesamtkauf</h3>
+                    <div class="accessories-checkout-summary">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <span style="font-size: 1.1em; color: #2c3e50; font-weight: 600;" data-i18n="checkout_total_price">Gesamtpreis (UVP):</span>
+                            <span id="accessories-checkout-total" style="font-size: 1.5em; color: #1565c0; font-weight: 700;">€0,00</span>
+                        </div>
+                    </div>
+                    <button class="accessories-checkout-button" onclick="checkoutFromAccessories()" data-i18n="checkout_final_btn">Kauf abschließen (alle Komponenten kaufen)</button>
+                </div>
+            </section>
+
+            <!-- Pre-Built PCs Section -->
+            <section class="section">
+                <h2 class="section-title" data-i18n="section_prebuilt">Empfohlene Fertig-PCs</h2>
+                <div class="prebuilt-grid">
+                    <!-- Fertig-PC Card 1 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Gaming PC Bundle</strong>
+                            <p>Hochwertiger Gaming PC mit moderner Grafikkarte und schnellem Prozessor. Ideal für Gamer, die 1080p und 1440p in hohen Einstellungen spielen möchten. Bietet eine großartige Balance zwischen Leistung und Preis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 2 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Office Workstation</strong>
+                            <p>Kompakte und stromsparende Office-Lösung für Büroarbeit, Videokonferenzen und Büroanwendungen. Mit energieeffizientem Prozessor und ausreichend RAM für multitasking. Perfekt für Home Office und kleinere Unternehmen.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 3 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Creator Workstation</strong>
+                            <p>Professionelle Workstation für Video-Editing, 3D-Rendering und Content Creation. Mit High-End CPU und viel RAM für intensive Anwendungen. Optimiert für Adobe Creative Cloud und professionelle Software.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 4 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Budget Gaming PC</strong>
+                            <p>Günstiger Einstiegs-Gaming PC für Casual Gamer und eSports Titel. Bietet solide 1080p Gaming Performance mit mittleren bis hohen Einstellungen. Zukunftssicher und leicht zu erweitern.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 5 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Streaming PC</strong>
+                            <p>Spezialisiert für Content Streamer mit Multi-Core CPU und genug GPU Power. Perfekt für Twitch, YouTube und OBS Streaming in 1080p60 oder 4K. Mit optimierter Netzwerk-Leistung.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 6 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Ultrahigh-End PC</strong>
+                            <p>Top-of-the-Line Gaming und Workstation PC mit den besten verfügbaren Komponenten. 4K Gaming, Professional Rendering und Content Creation auf höchstem Niveau. Zukunftssicher für die nächsten Jahre.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Product Info Modal -->
+        <div class="product-modal" id="productModal" onclick="if(event.target === this) closeProductModal()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalProductName">Produktname</h2>
+                    <button class="modal-close" onclick="closeProductModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalProductDescription">Produktbeschreibung</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p data-i18n="footer_copyright">&copy; 2025 PC Konfigurator. Alle Rechte vorbehalten.</p>
+                <div class="footer-links">
+                    <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+                    <a href="datenschutz.html" data-i18n="footer_datenschutz">Datenschutz</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Cookie Consent -->
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>
+    <script src="cookieconsent-init.js"></script>
+</body>
+</html>
