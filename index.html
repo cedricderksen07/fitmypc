@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+      
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Konfigurator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-left">
+                <button class="hamburger-btn" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                                <a href="index.html" class="logo" aria-label="Fit_my_PC">
+                                        <span class="logo-svg">
+                                                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g filter="url(#neonGlow)">
+                                                        <path d="M30 15L45 25V40L30 50L15 40V25L30 15Z" fill="rgba(6, 182, 212, 0.2)" stroke="#06B6D4" stroke-width="2"/>
+                                                        <path d="M30 5L45 15L30 25L15 15L30 5Z" fill="rgba(6, 182, 212, 0.3)" stroke="#22D3EE" stroke-width="2"/>
+                                                        <path d="M30 25L45 15V40L30 50V25Z" fill="rgba(6, 182, 212, 0.15)" stroke="#0891B2" stroke-width="2"/>
+                                                        <circle cx="30" cy="30" r="5" fill="#22D3EE" opacity="0.8"/>
+                                                        <line x1="30" y1="15" x2="30" y2="25" stroke="#22D3EE" stroke-width="1"/>
+                                                        <line x1="30" y1="35" x2="30" y2="45" stroke="#22D3EE" stroke-width="1"/>
+                                                    </g>
+                                                    <defs>
+                                                        <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                                            <feMerge>
+                                                                <feMergeNode in="coloredBlur"/>
+                                                                <feMergeNode in="SourceGraphic"/>
+                                                            </feMerge>
+                                                        </filter>
+                                                    </defs>
+                                                </svg>
+                                        </span>
+                                        <span class="logo-text"><span class="logo-word-main">Fit</span><span class="logo-word-my">my</span><span class="logo-word-main">Pc</span></span>
+                                </a>
+            </div>
+            <div class="nav-right">
+                
+                <a href="account.html" class="account-link" data-i18n="nav_account">👤 Konto erstellen</a>
+            </div>
+        </nav>
+
+        <!-- Navigation Menu -->
+        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+        <div class="menu-panel" id="menuPanel">
+            <div class="menu-header">
+                <h2>Menü</h2>
+                <button class="menu-close" onclick="closeMenu()">×</button>
+            </div>
+            <ul class="menu-items">
+                <li><a href="index.html#" onclick="scrollToSection('pc-type', closeMenu())">PC-Typ wählen</a></li>
+
+                <li><a href="index.html#" onclick="scrollToSection('components', closeMenu())">Komponenten</a></li>
+                <li><a href="index.html#" onclick="scrollToSection('cases', closeMenu())">Gehäuse</a></li>
+                <li><a href="index.html#" onclick="scrollToSection('accessories', closeMenu())">Zubehör</a></li>
+                <li><a href="prebuilt-pcs.html" onclick="closeMenu()">Fertig-PCs</a></li>
+                <li><a href="datenschutz.html" onclick="closeMenu()">Datenschutz</a></li>
+                <li><a href="impressum.html" onclick="closeMenu()">Impressum</a></li>
+            </ul>
+        </div>
+
+        <!-- Header -->
+        <header class="gaming-header">
+            <div class="header-content">
+                <h1 data-i18n="header_title">PC Konfigurator</h1>
+                <p class="tagline" data-i18n="header_subtitle">Zusammenstellung der optimalen Hardware-Lösung</p>
+            </div>
+            <div class="header-accent"></div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="content gaming-content">
+            <!-- PC Type Selection -->
+            <section class="section" id="pc-type">
+                <h2 class="section-title" data-i18n="section_pc_type">PC-Typ wählen</h2>
+                <div class="pc-type-selector">
+                    <button class="pc-type-btn active" data-type="gaming" data-i18n="btn_gaming">🎮 Gaming PC</button>
+                    <button class="pc-type-btn" data-type="office" data-i18n="btn_office">💼 Office PC</button>
+                    <button class="pc-type-btn" data-type="workstation" data-i18n="btn_workstation">🖥️ Workstation</button>
+                    <button class="pc-type-btn" data-type="streaming" data-i18n="btn_streaming">🎥 Streaming</button>
+                    <button class="pc-type-btn" data-type="creator" data-i18n="btn_creator">✏️ Creator PC</button>
+                    <button class="pc-type-btn" data-type="budget" data-i18n="btn_budget">⚡ Budget</button>
+                </div>
+            </section>
+
+            <!-- Budget Builder Section -->
+            <section class="section" id="budgetSection">
+                <h2 class="section-title" data-i18n="section_budget">PC nach Budget bauen</h2>
+                <div class="budget-builder">
+                    <input type="number" id="budgetInput" data-i18n="input_budget" placeholder="Gib dein Budget ein (z.B. 1500)" min="0" step="50">
+                    <button id="budgetBtn" class="budget-btn" data-i18n="btn_budget_build">PC automatisch zusammenstellen</button>
+                    <div id="budgetResult" class="budget-result"></div>
+                </div>
+            </section>
+
+            <!-- Configurator Section -->
+            <section class="section" id="components">
+                <h2 class="section-title" data-i18n="section_configurator">PC zusammenstellen</h2>
+                
+                <button id="resetBtn" class="reset-btn" data-i18n="btn_reset">Zurücksetzen</button>
+
+                <!-- Case Selection Grid -->
+                <div class="case-selection-section" id="cases">
+                    <h3 class="case-selection-title" data-i18n="case_selection_title">1. Wählen Sie Ihr Gehäuse</h3>
+                    <div class="case-gallery-wrapper">
+                        <div class="case-gallery" id="caseGallery"></div>
+                    </div>
+                </div>
+
+                <!-- Component Selection Grid -->
+                <div class="configurator-grid">
+                    <!-- CPU -->
+                    <div class="component-group">
+                        <label for="cpu" data-i18n="label_cpu">⚙️ Prozessor (CPU)</label>
+                        <select id="cpu" data-component="cpu">
+                            <option value="" data-i18n="option_cpu">-- CPU auswählen --</option>
+                        </select>
+                        <div id="cpu-display" class="price-display"></div>
+                        <button id="cpu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Mainboard -->
+                    <div class="component-group">
+                        <label for="mainboard" data-i18n="label_mainboard">🖲️ Mainboard</label>
+                        <select id="mainboard" data-component="mainboard">
+                            <option value="" data-i18n="option_mainboard">-- Mainboard auswählen --</option>
+                        </select>
+                        <div id="mainboard-display" class="price-display"></div>
+                        <button id="mainboard-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- RAM -->
+                    <div class="component-group">
+                        <label for="ram" data-i18n="label_ram">💾 RAM</label>
+                        <select id="ram" data-component="ram">
+                            <option value="" data-i18n="option_ram">-- RAM auswählen --</option>
+                        </select>
+                        <div id="ram-display" class="price-display"></div>
+                        <button id="ram-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- GPU -->
+                    <div class="component-group">
+                        <label for="gpu" data-i18n="label_gpu">🎮 Grafikkarte (GPU)</label>
+                        <select id="gpu" data-component="gpu">
+                            <option value="" data-i18n="option_gpu">-- GPU auswählen --</option>
+                        </select>
+                        <div id="gpu-display" class="price-display"></div>
+                        <button id="gpu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- PSU -->
+                    <div class="component-group">
+                        <label for="psu" data-i18n="label_psu">⚡ Netzteil (PSU)</label>
+                        <select id="psu" data-component="psu">
+                            <option value="" data-i18n="option_psu">-- Netzteil auswählen --</option>
+                        </select>
+                        <div id="psu-display" class="price-display"></div>
+                        <button id="psu-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Storage -->
+                    <div class="component-group">
+                        <label for="storage" data-i18n="label_storage">💿 Speicher (SSD/HDD)</label>
+                        <select id="storage" data-component="storage">
+                            <option value="" data-i18n="option_storage">-- Speicher auswählen --</option>
+                        </select>
+                        <div id="storage-display" class="price-display"></div>
+                        <button id="storage-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- Case -->
+                    <div class="component-group">
+                        <label for="case" data-i18n="label_case">📦 Gehäuse</label>
+                        <select id="case" data-component="case">
+                            <option value="" data-i18n="option_case">-- Gehäuse auswählen --</option>
+                        </select>
+                        <div id="case-display" class="price-display"></div>
+                        <button id="case-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+
+                    <!-- CPU Cooler -->
+                    <div class="component-group">
+                        <label for="cooler" data-i18n="label_cooler">❄️ CPU-Kühler</label>
+                        <select id="cooler" data-component="cooler">
+                            <option value="" data-i18n="option_cooler">-- Kühler auswählen --</option>
+                        </select>
+                        <div id="cooler-display" class="price-display"></div>
+                        <button id="cooler-buy" class="affiliate-btn" data-i18n="btn_buy">Kaufen</button>
+                    </div>
+                </div>
+
+                <!-- Compatibility Checks -->
+                <div class="compatibility">
+                    <h3 style="margin-bottom: 20px; color: #1565c0;" data-i18n="compatibility_title">Kompatibilitätsprüfung</h3>
+                    <div id="compatibility"></div>
+                </div>
+
+                <!-- Summary Box -->
+                <div class="summary-box">
+                    <div id="summary"></div>
+                </div>
+
+                <!-- Complete Purchase Buttons -->
+                <div class="complete-purchase-buttons" style="display: none;">
+                    <button id="completeBtnPC" class="complete-purchase-btn">🖥️ Gesamtkauf</button>
+                    <button id="completeBtnAccessories" class="complete-purchase-btn">🛍️ Zum Zubehör</button>
+                </div>
+            </section>
+
+            <!-- Accessories Section -->
+            <section class="section" id="accessories">
+                <div class="section-title-wrapper">
+                    <h2 class="section-title" data-i18n="section_accessories">🛍️ Zubehör (Optional)</h2>
+                    <p class="accessories-note" data-i18n="accessories_note">siehe das vollständig vorhandene zubehör</p>
+                </div>
+                
+                <div class="accessories-container">
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_cables">Kabel</h3>
+                        <div id="cables-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_monitors">Monitore</h3>
+                        <div id="monitors-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Tastaturen</h3>
+                        <div id="keyboards-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Maus</h3>
+                        <div id="mice-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title">Headsets & Audio</h3>
+                        <div id="headsets-grid" class="accessories-grid"></div>
+                    </div>
+
+                    <div class="accessories-category">
+                        <h3 class="category-title" data-i18n="accessories_peripherals">Sonstiges Zubehör</h3>
+                        <div id="other-grid" class="accessories-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Accessories Summary -->
+                <div class="accessories-summary">
+                    <h3 data-i18n="accessories_selected">Gewähltes Zubehör</h3>
+                    <div id="accessories-selected-list"></div>
+                    <div id="accessories-total-price" class="accessories-total-price"></div>
+                </div>
+
+                <!-- Accessories Checkout Section -->
+                <div class="accessories-checkout-section" id="accessories-checkout-section" style="display: none;">
+                    <h3 class="accessories-checkout-title" data-i18n="checkout_title">Gesamtkauf</h3>
+                    <div class="accessories-checkout-summary">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <span style="font-size: 1.1em; color: #2c3e50; font-weight: 600;" data-i18n="checkout_total_price">Gesamtpreis (UVP):</span>
+                            <span id="accessories-checkout-total" style="font-size: 1.5em; color: #1565c0; font-weight: 700;">€0,00</span>
+                        </div>
+                    </div>
+                    <button class="accessories-checkout-button" onclick="checkoutFromAccessories()" data-i18n="checkout_final_btn">Kauf abschließen (alle Komponenten kaufen)</button>
+                </div>
+            </section>
+
+            <!-- Pre-Built PCs Section -->
+            <section class="section">
+                <h2 class="section-title" data-i18n="section_prebuilt">Empfohlene Fertig-PCs</h2>
+                <div class="prebuilt-grid">
+                    <!-- Fertig-PC Card 1 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Gaming PC Bundle</strong>
+                            <p>Hochwertiger Gaming PC mit moderner Grafikkarte und schnellem Prozessor. Ideal für Gamer, die 1080p und 1440p in hohen Einstellungen spielen möchten. Bietet eine großartige Balance zwischen Leistung und Preis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 2 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Office Workstation</strong>
+                            <p>Kompakte und stromsparende Office-Lösung für Büroarbeit, Videokonferenzen und Büroanwendungen. Mit energieeffizientem Prozessor und ausreichend RAM für multitasking. Perfekt für Home Office und kleinere Unternehmen.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 3 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Creator Workstation</strong>
+                            <p>Professionelle Workstation für Video-Editing, 3D-Rendering und Content Creation. Mit High-End CPU und viel RAM für intensive Anwendungen. Optimiert für Adobe Creative Cloud und professionelle Software.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 4 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Budget Gaming PC</strong>
+                            <p>Günstiger Einstiegs-Gaming PC für Casual Gamer und eSports Titel. Bietet solide 1080p Gaming Performance mit mittleren bis hohen Einstellungen. Zukunftssicher und leicht zu erweitern.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 5 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Streaming PC</strong>
+                            <p>Spezialisiert für Content Streamer mit Multi-Core CPU und genug GPU Power. Perfekt für Twitch, YouTube und OBS Streaming in 1080p60 oder 4K. Mit optimierter Netzwerk-Leistung.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fertig-PC Card 6 -->
+                    <div class="prebuilt-card">
+                        <div class="card-image">hier könnt ihr produkt sein</div>
+                        <div class="card-description">
+                            <strong>Ultrahigh-End PC</strong>
+                            <p>Top-of-the-Line Gaming und Workstation PC mit den besten verfügbaren Komponenten. 4K Gaming, Professional Rendering und Content Creation auf höchstem Niveau. Zukunftssicher für die nächsten Jahre.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Product Info Modal -->
+        <div class="product-modal" id="productModal" onclick="if(event.target === this) closeProductModal()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalProductName">Produktname</h2>
+                    <button class="modal-close" onclick="closeProductModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalProductDescription">Produktbeschreibung</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p data-i18n="footer_copyright">&copy; 2025 PC Konfigurator. Alle Rechte vorbehalten.</p>
+                <div class="footer-links">
+                    <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+                    <a href="datenschutz.html" data-i18n="footer_datenschutz">Datenschutz</a>
+                    <a href="index.html#cookie" class="footer-cookie-link" aria-label="Cookie Einstellungen öffnen">Cookie-Einstellungen</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Cookie Consent -->
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>
+    <script src="cookieconsent-init.js"></script>
+
+    <script>
+    // Open cookie preferences when the URL has #cookie, when the hash changes, or when the footer link is clicked.
+    (function(){
+        function tryOpen(){
+            if(window.CookiePrefs && typeof CookiePrefs.open === 'function'){
+                CookiePrefs.open();
+                try{ history.replaceState(null,'', window.location.pathname + window.location.search); }catch(e){}
+                return true;
+            }
+            return false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            try{
+                if(window.location && window.location.hash === '#cookie'){
+                    if(!tryOpen()){
+                        // retry a couple times
+                        var attempts = 0;
+                        var timer = setInterval(function(){ attempts++; if(tryOpen() || attempts>8) clearInterval(timer); }, 200);
+                    }
+                }
+
+                // handle click on footer link(s) without navigating/reloading
+                document.querySelectorAll('a.footer-cookie-link').forEach(function(a){
+                    a.addEventListener('click', function(ev){
+                        ev.preventDefault();
+                        if(!tryOpen()){
+                            // fall back to setting the hash which will trigger hashchange
+                            try{ window.location.hash = 'cookie'; }catch(e){}
+                        }
+                    });
+                });
+            }catch(e){}
+        });
+
+        // also respond to hash changes (e.g., if a user manually navigates)
+        window.addEventListener('hashchange', function(){
+            try{ if(window.location.hash === '#cookie') tryOpen(); }catch(e){}
+        });
+    })();
+    </script>
+
+    <noscript>
+      <div class="cm__noscript">Bitte aktivieren Sie JavaScript oder lesen Sie unsere <a href="datenschutz.html">Datenschutzerklärung</a>, um Cookie-Präferenzen zu setzen.</div>
+    </noscript>
+</body>
+</html>

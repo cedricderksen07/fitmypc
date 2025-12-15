@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+      
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Konto - Fit_my_PC</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+                        <a href="index.html" class="logo" aria-label="Fit_my_PC">
+                                <span class="logo-svg">
+                                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g filter="url(#neonGlow)">
+                                                <path d="M30 15L45 25V40L30 50L15 40V25L30 15Z" fill="rgba(6, 182, 212, 0.2)" stroke="#06B6D4" stroke-width="2"/>
+                                                <path d="M30 5L45 15L30 25L15 15L30 5Z" fill="rgba(6, 182, 212, 0.3)" stroke="#22D3EE" stroke-width="2"/>
+                                                <path d="M30 25L45 15V40L30 50V25Z" fill="rgba(6, 182, 212, 0.15)" stroke="#0891B2" stroke-width="2"/>
+                                                <circle cx="30" cy="30" r="5" fill="#22D3EE" opacity="0.8"/>
+                                                <line x1="30" y1="15" x2="30" y2="25" stroke="#22D3EE" stroke-width="1"/>
+                                                <line x1="30" y1="35" x2="30" y2="45" stroke="#22D3EE" stroke-width="1"/>
+                                            </g>
+                                            <defs>
+                                                <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                                    <feMerge>
+                                                        <feMergeNode in="coloredBlur"/>
+                                                        <feMergeNode in="SourceGraphic"/>
+                                                    </feMerge>
+                                                </filter>
+                                            </defs>
+                                        </svg>
+                                </span>
+                                <span class="logo-text"><span class="logo-word-main">Fit</span><span class="logo-word-my">my</span><span class="logo-word-main">Pc</span></span>
+                        </a>
+        </div>
+        <div class="nav-right">
+            <a href="account.html" class="account-link" data-i18n="nav_account">👤 Konto erstellen</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="gaming-header">
+            <div class="header-content">
+                <h1 data-i18n="account_title">Mein Konto</h1>
+                <p class="tagline" data-i18n="account_subtitle">Melden Sie sich an oder registrieren Sie sich</p>
+            </div>
+            <div class="header-accent"></div>
+        </header>
+
+        <div class="content gaming-content">
+            <section class="section">
+                <div class="account-container">
+                    <!-- Login Tab -->
+                    <div class="account-tab">
+                        <input type="radio" id="tab-login" name="account-tab" checked>
+                        <label for="tab-login" class="tab-label" data-i18n="tab_login">Login</label>
+                        
+                        <div class="tab-content">
+                            <form id="loginForm" class="account-form">
+                                <div class="form-group">
+                                    <label for="login-email" data-i18n="login_email">E-Mail:</label>
+                                    <input type="email" id="login-email" required data-i18n="login_email_placeholder" placeholder="ihre@email.de">
+                                </div>
+                                <div class="form-group">
+                                    <label for="login-password" data-i18n="login_password">Passwort:</label>
+                                    <input type="password" id="login-password" required data-i18n="login_password_placeholder" placeholder="Passwort">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" id="login-remember">
+                                        <span data-i18n="login_remember">Angemeldet bleiben</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="account-btn" data-i18n="login_submit">Login</button>
+                                <p style="text-align: center; color: #999; margin-top: 15px;">
+                                    <a href="#" style="color: #1565c0;" data-i18n="login_forgot">Passwort vergessen?</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Register Tab -->
+                    <div class="account-tab">
+                        <input type="radio" id="tab-register" name="account-tab">
+                        <label for="tab-register" class="tab-label" data-i18n="tab_register">Registrierung</label>
+                        
+                        <div class="tab-content">
+                            <form id="registerForm" class="account-form">
+                                <div class="form-group">
+                                    <label for="register-name" data-i18n="register_name">Vollständiger Name:</label>
+                                    <input type="text" id="register-name" required data-i18n="register_name_placeholder" placeholder="Ihr Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-email" data-i18n="register_email">E-Mail:</label>
+                                    <input type="email" id="register-email" required data-i18n="register_email_placeholder" placeholder="ihre@email.de">
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-password" data-i18n="register_password">Passwort:</label>
+                                    <input type="password" id="register-password" required data-i18n="register_password_placeholder" placeholder="Mindestens 8 Zeichen">
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-password-confirm" data-i18n="register_password_confirm">Passwort wiederholen:</label>
+                                    <input type="password" id="register-password-confirm" required data-i18n="register_password_confirm_placeholder" placeholder="Passwort wiederholen">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" id="register-terms" required>
+                                        <span data-i18n="register_terms">Ich akzeptiere die Datenschutzerklärung</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="account-btn" data-i18n="register_submit">Registrieren</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logged In View -->
+                <div id="loggedInView" style="display: none;">
+                    <div class="logged-in-box">
+                        <h2 style="color: #1565c0; margin-bottom: 30px;" data-i18n="logged_in_welcome">Willkommen zurück!</h2>
+                        
+                        <div class="user-info">
+                            <h3 data-i18n="logged_in_info_title">Ihre Profilinformationen</h3>
+                            <div class="info-item">
+                                <label data-i18n="logged_in_name">Name:</label>
+                                <span id="userFullName">-</span>
+                            </div>
+                            <div class="info-item">
+                                <label data-i18n="logged_in_email">E-Mail:</label>
+                                <span id="userEmail">-</span>
+                            </div>
+                        </div>
+
+                        <div class="user-actions">
+                            <h3 data-i18n="logged_in_actions">Aktionen</h3>
+                            <button class="account-btn" id="editProfileBtn" data-i18n="logged_in_edit">Profil bearbeiten</button>
+                            <button class="account-btn" style="background: #d32f2f; border-color: #d32f2f;" onclick="logout()" data-i18n="logged_in_logout">Logout</button>
+                            <div id="accountMessage" style="margin-top: 12px; color: #1565c0; font-weight: 600;"></div>
+                        </div>
+
+                        <form id="editProfileForm" class="account-form" style="display: none; margin-top: 15px;">
+                            <div class="form-group">
+                                <label for="edit-name">Vollständiger Name</label>
+                                <input type="text" id="edit-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-email">E-Mail</label>
+                                <input type="email" id="edit-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-password">Neues Passwort (optional)</label>
+                                <input type="password" id="edit-password" placeholder="Leer lassen, um es nicht zu ändern">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-password-confirm">Passwort bestätigen</label>
+                                <input type="password" id="edit-password-confirm" placeholder="Nur ausfüllen, wenn Sie das Passwort ändern">
+                            </div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button type="submit" class="account-btn">Speichern</button>
+                                <button type="button" class="account-btn" style="background: #6b7280; border-color: #6b7280;" id="cancelEditBtn">Abbrechen</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p data-i18n="footer_copyright">&copy; 2025 Fit_my_PC. Alle Rechte vorbehalten.</p>
+                <div class="footer-links">
+                    <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+                    <a href="datenschutz.html" data-i18n="footer_datenschutz">Datenschutz</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Cookie Consent -->
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>
+    <script src="cookieconsent-init.js"></script>
+    <noscript>
+      <div class="cm__noscript">Bitte aktivieren Sie JavaScript oder lesen Sie unsere <a href="datenschutz.html">Datenschutzerklärung</a>, um Cookie-Präferenzen zu setzen.</div>
+    </noscript>
+    <script>
+        
+
+        function checkLoginStatus() {
+            const userData = getStoredUser();
+            const loginForm = document.querySelector('.account-container');
+            const loggedInView = document.getElementById('loggedInView');
+            const editForm = document.getElementById('editProfileForm');
+
+            if (userData) {
+                if (loginForm) loginForm.style.display = 'none';
+                loggedInView.style.display = 'block';
+                document.getElementById('userFullName').textContent = userData.name || '-';
+                document.getElementById('userEmail').textContent = userData.email || '-';
+                if (editForm) {
+                    document.getElementById('edit-name').value = userData.name || '';
+                    document.getElementById('edit-email').value = userData.email || '';
+                    editForm.style.display = 'none';
+                }
+            } else {
+                if (loginForm) loginForm.style.display = 'block';
+                if (loggedInView) loggedInView.style.display = 'none';
+            }
+
+            updateAccountLink();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('login-remember').checked;
+
+            const stored = getStoredUser();
+            if (stored && stored.email && stored.password) {
+                if (stored.email !== email) {
+                    alert('Kein Konto für diese E-Mail gefunden. Bitte registrieren.');
+                    return;
+                }
+                if (stored.password !== btoa(password)) {
+                    alert('Falsches Passwort.');
+                    return;
+                }
+                stored.loginTime = new Date().toISOString();
+                stored.remember = remember;
+                setStoredUser(stored);
+                showAccountMessage('Erfolgreich eingeloggt.');
+            } else {
+                alert('Kein bestehender Account gefunden. Bitte registrieren Sie sich zuerst.');
+                return;
+            }
+            checkLoginStatus();
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const passwordConfirm = document.getElementById('register-password-confirm').value;
+
+            if (password !== passwordConfirm) {
+                alert('Passwörter stimmen nicht überein!');
+                return;
+            }
+
+            const userData = {
+                name: name,
+                email: email,
+                password: btoa(password),
+                registeredAt: new Date().toISOString()
+            };
+
+            setStoredUser(userData);
+            sendRegistrationEmail(userData);
+            checkLoginStatus();
+            showAccountMessage('Registrierung erfolgreich. Sie sind jetzt eingeloggt.');
+        }
+
+        function sendRegistrationEmail(user) {
+            // Placeholder: requires backend/email service to actually send mail.
+            console.info('Registration email would be sent to:', user.email);
+            alert('Registrierungsbestätigung an ' + user.email + ' (Demo – bitte E-Mail-Service hinterlegen).');
+        }
+
+        function showAccountMessage(msg, isError = false) {
+            const el = document.getElementById('accountMessage');
+            if (!el) return;
+            el.textContent = msg;
+            el.style.color = isError ? '#d32f2f' : '#1565c0';
+        }
+
+        function openProfileEditor() {
+            const form = document.getElementById('editProfileForm');
+            if (!form) return;
+            const user = getStoredUser();
+            if (user) {
+                document.getElementById('edit-name').value = user.name || '';
+                document.getElementById('edit-email').value = user.email || '';
+            }
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function handleProfileSave(e) {
+            e.preventDefault();
+            const user = getStoredUser();
+            if (!user) return;
+
+            const name = document.getElementById('edit-name').value.trim();
+            const email = document.getElementById('edit-email').value.trim();
+            const newPassword = document.getElementById('edit-password').value;
+            const confirmPassword = document.getElementById('edit-password-confirm').value;
+
+            if (!name || !email) {
+                showAccountMessage('Name und E-Mail dürfen nicht leer sein.', true);
+                return;
+            }
+
+            if (newPassword || confirmPassword) {
+                if (newPassword.length < 8) {
+                    showAccountMessage('Das neue Passwort muss mindestens 8 Zeichen haben.', true);
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showAccountMessage('Passwörter stimmen nicht überein.', true);
+                    return;
+                }
+                user.password = btoa(newPassword);
+            }
+
+            user.name = name;
+            user.email = email;
+            setStoredUser(user);
+            checkLoginStatus();
+            showAccountMessage('Profil aktualisiert.');
+            document.getElementById('editProfileForm').style.display = 'none';
+        }
+
+        function logout() {
+            clearStoredUser();
+            updateAccountLink();
+            location.reload();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAccountLink();
+            checkLoginStatus();
+
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const editBtn = document.getElementById('editProfileBtn');
+            const editForm = document.getElementById('editProfileForm');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+            if (loginForm) loginForm.addEventListener('submit', handleLogin);
+            if (registerForm) registerForm.addEventListener('submit', handleRegister);
+            if (editBtn) editBtn.addEventListener('click', openProfileEditor);
+            if (editForm) editForm.addEventListener('submit', handleProfileSave);
+            if (cancelEditBtn) cancelEditBtn.addEventListener('click', () => {
+                const form = document.getElementById('editProfileForm');
+                if (form) form.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

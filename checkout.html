@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+     
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gesamtkauf - PC Konfigurator</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .checkout-title {
+            color: #1565c0;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .checkout-components-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .checkout-section-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1565c0;
+        }
+
+        .checkout-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .checkout-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkout-item-image {
+            width: 150px;
+            height: 150px;
+            min-width: 150px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            padding: 10px;
+        }
+
+        .checkout-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .checkout-item-name {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .checkout-item-type {
+            color: #999;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .checkout-item-description {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .checkout-item-price {
+            color: #1565c0;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .checkout-summary {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .checkout-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #2c3e50;
+        }
+
+        .checkout-summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkout-summary-label {
+            font-weight: 600;
+        }
+
+        .checkout-summary-value {
+            color: #1565c0;
+            font-weight: 700;
+        }
+
+        .checkout-total {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #1565c0;
+        }
+
+        .checkout-total-label {
+            color: #2c3e50;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .checkout-total-price {
+            color: #1565c0;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .checkout-bottom-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .checkout-back-btn {
+            padding: 15px 40px;
+            background: white;
+            color: #1565c0;
+            border: 2px solid #1565c0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+        }
+
+        .checkout-back-btn:hover {
+            background: #f0f8ff;
+        }
+
+        .checkout-final-btn {
+            padding: 15px 40px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+        }
+
+        .checkout-final-btn:hover {
+            background: #0d47a1;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+        }
+
+        .checkout-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .checkout-empty-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .checkout-empty-title {
+            color: #2c3e50;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .checkout-empty-text {
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .checkout-back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkout-back-link:hover {
+            text-decoration: underline;
+        }
+
+        .checkout-accessories-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-summary {
+                position: static;
+            }
+
+            .checkout-bottom-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+                        <a href="index.html" class="logo" aria-label="Fit_my_PC">
+                                <span class="logo-svg">
+                                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g filter="url(#neonGlow)">
+                                                <path d="M30 15L45 25V40L30 50L15 40V25L30 15Z" fill="rgba(6, 182, 212, 0.2)" stroke="#06B6D4" stroke-width="2"/>
+                                                <path d="M30 5L45 15L30 25L15 15L30 5Z" fill="rgba(6, 182, 212, 0.3)" stroke="#22D3EE" stroke-width="2"/>
+                                                <path d="M30 25L45 15V40L30 50V25Z" fill="rgba(6, 182, 212, 0.15)" stroke="#0891B2" stroke-width="2"/>
+                                                <circle cx="30" cy="30" r="5" fill="#22D3EE" opacity="0.8"/>
+                                                <line x1="30" y1="15" x2="30" y2="25" stroke="#22D3EE" stroke-width="1"/>
+                                                <line x1="30" y1="35" x2="30" y2="45" stroke="#22D3EE" stroke-width="1"/>
+                                            </g>
+                                            <defs>
+                                                <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                                    <feMerge>
+                                                        <feMergeNode in="coloredBlur"/>
+                                                        <feMergeNode in="SourceGraphic"/>
+                                                    </feMerge>
+                                                </filter>
+                                            </defs>
+                                        </svg>
+                                </span>
+                                <span class="logo-text"><span class="logo-word-main">Fit</span><span class="logo-word-my">my</span><span class="logo-word-main">Pc</span></span>
+                        </a>
+        </div>
+        <div class="nav-right"></div>
+    </div>
+
+    <div class="container">
+        <header class="gaming-header">
+            <div class="header-content">
+                <h1 data-i18n="header_title">PC Konfigurator</h1>
+            </div>
+        </header>
+
+        <div class="checkout-container">
+            <a class="checkout-back-link" onclick="goBack()" data-i18n="checkout_back">← Zurück zum Konfigurator</a>
+            
+            <h2 class="checkout-title" data-i18n="checkout_title">Gesamtkauf</h2>
+            
+            <div id="checkoutContent"></div>
+            
+            <div class="checkout-bottom-actions">
+                <button class="checkout-back-btn" onclick="goBack()" data-i18n="checkout_back_btn">← Zurück</button>
+                <button class="checkout-final-btn" onclick="completePurchase()" data-i18n="checkout_final_btn">Kauf abschließen (alle Komponenten kaufen)</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <!-- Cookie Consent -->
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>
+    <script src="cookieconsent-init.js"></script>
+    <script>
+        function isLoggedInCheckout() {
+            try { return !!JSON.parse(localStorage.getItem('userData')||'null'); } catch(e){ return false; }
+        }
+
+        function storageGetCheckout(key){
+            try {
+                const store = isLoggedInCheckout() ? localStorage : sessionStorage;
+                return store.getItem(key);
+            } catch(e){ return null; }
+        }
+
+        function loadCheckoutData() {
+            const checkoutContent = document.getElementById('checkoutContent');
+            
+            let checkoutData = null;
+            let pageSource = storageGetCheckout('pageSource') || 'main';
+
+            const saved = storageGetCheckout('checkoutData');
+            if (saved) {
+                try {
+                    checkoutData = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error loading checkout data:', e);
+                }
+            }
+
+            if (!checkoutData) {
+                checkoutData = {
+                    components: {},
+                    accessories: []
+                };
+            }
+
+            if (pageSource === 'accessories') {
+                const savedAccessories = storageGetCheckout('selectedAccessories');
+                if (savedAccessories) {
+                    try {
+                        const entries = JSON.parse(savedAccessories);
+                        checkoutData.accessories = [];
+                        entries.forEach(([id, data]) => {
+                            checkoutData.accessories.push({
+                                id: id,
+                                name: data.name,
+                                price: data.price
+                            });
+                        });
+                    } catch (e) {
+                        console.error('Error loading accessories:', e);
+                    }
+                }
+            }
+
+            const hasComponents = checkoutData && Object.keys(checkoutData.components).length > 0;
+            const hasAccessories = checkoutData && checkoutData.accessories && checkoutData.accessories.length > 0;
+
+            if (!hasComponents && !hasAccessories) {
+                checkoutContent.innerHTML = `
+                    <div class="checkout-empty-state">
+                        <div class="checkout-empty-icon">📦</div>
+                        <div class="checkout-empty-title">Noch keine Auswahl gefunden</div>
+                        <div class="checkout-empty-text">Fügen Sie Zubehör hinzu oder erstellen Sie eine PC-Konfiguration.</div>
+                        <a href="index.html" class="checkout-back-btn" style="display: inline-block;">Zur Startseite</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let componentsHtml = '';
+            let componentTotal = 0;
+
+            Object.keys(checkoutData.components).forEach(componentType => {
+                const component = checkoutData.components[componentType];
+                const componentData = componentsData[componentType + 's'].find(c => c.id == component.id) || {};
+                const description = componentData.description || 'Keine Beschreibung verfügbar';
+                
+                componentsHtml += `
+                    <div class="checkout-item">
+                        <div class="checkout-item-image">hier könnte<br>ihr produkt<br>sein</div>
+                        <div class="checkout-item-content">
+                            <div>
+                                <div class="checkout-item-name">${component.name}</div>
+                                <div class="checkout-item-type">${getComponentTypeLabel(componentType)}</div>
+                                <div class="checkout-item-description">${description}</div>
+                            </div>
+                            <div class="checkout-item-price">€${component.price.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    </div>
+                `;
+                componentTotal += component.price;
+            });
+
+            let accessoriesHtml = '';
+            let accessoriesTotal = 0;
+
+            if (checkoutData.accessories && checkoutData.accessories.length > 0) {
+                checkoutData.accessories.forEach(accessory => {
+                    const accessoryData = componentsData.accessories.find(a => a.id == accessory.id) || {};
+                    const description = accessoryData.description || 'Keine Beschreibung verfügbar';
+                    
+                    accessoriesHtml += `
+                        <div class="checkout-item">
+                            <div class="checkout-item-image">hier könnte<br>ihr produkt<br>sein</div>
+                            <div class="checkout-item-content">
+                                <div>
+                                    <div class="checkout-item-name">${accessory.name}</div>
+                                    <div class="checkout-item-type">Zubehör</div>
+                                    <div class="checkout-item-description">${description}</div>
+                                </div>
+                                <div class="checkout-item-price">€${accessory.price.toFixed(2).replace('.', ',')}</div>
+                            </div>
+                        </div>
+                    `;
+                    accessoriesTotal += accessory.price;
+                });
+            }
+
+            const totalPrice = componentTotal + accessoriesTotal;
+
+            let html = `
+                <div class="checkout-content">
+                    <div class="checkout-components-section">
+                        <h3 class="checkout-section-title">PC-Konfiguration Übersicht</h3>
+                        ${componentsHtml}
+                        ${accessoriesHtml ? `
+                            <div class="checkout-accessories-section">
+                                <h4 class="checkout-section-title" style="font-size: 1.1em; margin-top: 0;">Gewähltes Zubehör</h4>
+                                ${accessoriesHtml}
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <div class="checkout-summary-item">
+                            <span class="checkout-summary-label">Anzahl Komponenten:</span>
+                            <span class="checkout-summary-value">${Object.keys(checkoutData.components).length}</span>
+                        </div>
+                        ${accessoriesHtml ? `
+                            <div class="checkout-summary-item">
+                                <span class="checkout-summary-label">Zubehör Artikel:</span>
+                                <span class="checkout-summary-value">${checkoutData.accessories.length}</span>
+                            </div>
+                        ` : ''}
+                        <div class="checkout-summary-item">
+                            <span class="checkout-summary-label">PC Komponenten:</span>
+                            <span class="checkout-summary-value">€${componentTotal.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        ${accessoriesHtml ? `
+                            <div class="checkout-summary-item">
+                                <span class="checkout-summary-label">Zubehör:</span>
+                                <span class="checkout-summary-value">€${accessoriesTotal.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="checkout-total">
+                            <div class="checkout-total-label">Gesamtpreis (UVP):</div>
+                            <div class="checkout-total-price">€${totalPrice.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            checkoutContent.innerHTML = html;
+        }
+
+        function getComponentTypeLabel(type) {
+            const labels = {
+                'cpu': 'Prozessor (CPU)',
+                'mainboard': 'Mainboard',
+                'ram': 'RAM',
+                'gpu': 'Grafikkarte (GPU)',
+                'psu': 'Netzteil (PSU)',
+                'storage': 'Speicher',
+                'case': 'Gehäuse',
+                'cooler': 'CPU-Kühler'
+            };
+            return labels[type] || type;
+        }
+
+        function goBack() {
+            const pageSource = localStorage.getItem('pageSource') || 'main';
+            if (pageSource === 'accessories') {
+                window.location.href = 'accessories.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function completePurchase() {
+            let data = null;
+            const pageSource = localStorage.getItem('pageSource') || 'main';
+            
+            const checkoutDataStr = localStorage.getItem('checkoutData');
+            if (checkoutDataStr) {
+                try {
+                    data = JSON.parse(checkoutDataStr);
+                } catch (e) {
+                    console.error('Error parsing checkout data:', e);
+                    return;
+                }
+            }
+
+            if (pageSource === 'accessories' && !data) {
+                data = {
+                    components: {},
+                    accessories: []
+                };
+            }
+
+            if (pageSource === 'accessories' && data) {
+                const savedAccessories = localStorage.getItem('selectedAccessories');
+                if (savedAccessories) {
+                    try {
+                        const entries = JSON.parse(savedAccessories);
+                        data.accessories = [];
+                        entries.forEach(([id, accessoryData]) => {
+                            data.accessories.push({
+                                id: id,
+                                name: accessoryData.name,
+                                price: accessoryData.price
+                            });
+                        });
+                    } catch (e) {
+                        console.error('Error loading accessories:', e);
+                    }
+                }
+            }
+
+            if (data) {
+                const affiliateLinks = [];
+                
+                Object.keys(data.components).forEach(componentType => {
+                    const component = data.components[componentType];
+                    if (component.affiliateLink) {
+                        affiliateLinks.push(component.affiliateLink);
+                    }
+                });
+
+                if (data.accessories) {
+                    data.accessories.forEach(accessory => {
+                        const acc = componentsData.accessories.find(a => a.id == accessory.id);
+                        if (acc && acc.affiliateLink) {
+                            affiliateLinks.push(acc.affiliateLink);
+                        }
+                    });
+                }
+
+                affiliateLinks.forEach(link => window.open(link, '_blank'));
+                alert('Komponenten wurden in neuen Tabs geöffnet. Sie können diese jetzt kaufen.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCheckoutData();
+        });
+    </script>
+
+    <noscript>
+      <div class="cm__noscript">Bitte aktivieren Sie JavaScript oder lesen Sie unsere <a href="datenschutz.html">Datenschutzerklärung</a>, um Cookie-Präferenzen zu setzen.</div>
+    </noscript>
+</body>
+</html>

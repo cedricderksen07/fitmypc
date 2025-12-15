@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+          
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css">
+ 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubehör - PC Konfigurator</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .accessories-page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .accessories-page-title {
+            color: #1565c0;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .accessories-all-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .accessory-full-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .accessory-full-item:hover {
+            border-color: #1565c0;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.15);
+        }
+
+        .accessory-full-item.selected {
+            border-color: #1565c0;
+            background: #f0f8ff;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.2);
+        }
+
+        .accessory-full-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .accessory-full-type {
+            font-size: 0.85em;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .accessory-full-price {
+            font-weight: 700;
+            color: #1565c0;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .accessory-full-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #1565c0;
+            border: 2px solid #1565c0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .accessory-full-btn:hover {
+            background: #f0f8ff;
+        }
+
+        .accessory-full-btn.selected {
+            background: #1565c0;
+            color: white;
+        }
+
+        .accessories-page-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .accessories-selected-summary {
+            flex: 1;
+        }
+
+        .accessories-selected-summary h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .accessories-selected-count {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .accessories-total-display {
+            font-weight: 700;
+            color: #1565c0;
+            font-size: 1.3em;
+        }
+
+        .page-checkout-btn {
+            padding: 15px 40px;
+            background: #1565c0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .page-checkout-btn:hover {
+            background: #0d47a1;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+        }
+
+        .back-to-config {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .back-to-config:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+                        <a href="index.html" class="logo" aria-label="Fit_my_PC">
+                                <span class="logo-svg">
+                                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g filter="url(#neonGlow)">
+                                                <path d="M30 15L45 25V40L30 50L15 40V25L30 15Z" fill="rgba(6, 182, 212, 0.2)" stroke="#06B6D4" stroke-width="2"/>
+                                                <path d="M30 5L45 15L30 25L15 15L30 5Z" fill="rgba(6, 182, 212, 0.3)" stroke="#22D3EE" stroke-width="2"/>
+                                                <path d="M30 25L45 15V40L30 50V25Z" fill="rgba(6, 182, 212, 0.15)" stroke="#0891B2" stroke-width="2"/>
+                                                <circle cx="30" cy="30" r="5" fill="#22D3EE" opacity="0.8"/>
+                                                <line x1="30" y1="15" x2="30" y2="25" stroke="#22D3EE" stroke-width="1"/>
+                                                <line x1="30" y1="35" x2="30" y2="45" stroke="#22D3EE" stroke-width="1"/>
+                                            </g>
+                                            <defs>
+                                                <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                                    <feMerge>
+                                                        <feMergeNode in="coloredBlur"/>
+                                                        <feMergeNode in="SourceGraphic"/>
+                                                    </feMerge>
+                                                </filter>
+                                            </defs>
+                                        </svg>
+                                </span>
+                                <span class="logo-text"><span class="logo-word-main">Fit</span><span class="logo-word-my">my</span><span class="logo-word-main">Pc</span></span>
+                        </a>
+        </div>
+        <div class="nav-right"></div>
+    </div>
+
+    <div class="container">
+        <header class="gaming-header">
+            <div class="header-content">
+                <h1>PC Konfigurator</h1>
+            </div>
+        </header>
+
+        <div class="accessories-page-container">
+            <a class="back-to-config" onclick="goBackToConfigurator()">← Zurück zum Konfigurator</a>
+            
+            <h2 class="accessories-page-title">🛍️ Extra Zubehör</h2>
+            
+            <div class="accessories-container">
+                <div class="accessories-category">
+                    <h3 class="category-title">Kabel</h3>
+                    <div id="page-cables-grid" class="accessories-grid"></div>
+                </div>
+
+                <div class="accessories-category">
+                    <h3 class="category-title">Monitore</h3>
+                    <div id="page-monitors-grid" class="accessories-grid"></div>
+                </div>
+
+                <div class="accessories-category">
+                    <h3 class="category-title">Tastaturen</h3>
+                    <div id="page-keyboards-grid" class="accessories-grid"></div>
+                </div>
+
+                <div class="accessories-category">
+                    <h3 class="category-title">Maus</h3>
+                    <div id="page-mice-grid" class="accessories-grid"></div>
+                </div>
+
+                <div class="accessories-category">
+                    <h3 class="category-title">Headsets & Audio</h3>
+                    <div id="page-headsets-grid" class="accessories-grid"></div>
+                </div>
+
+                <div class="accessories-category">
+                    <h3 class="category-title">Sonstiges Zubehör</h3>
+                    <div id="page-other-grid" class="accessories-grid"></div>
+                </div>
+            </div>
+            
+            <div class="accessories-page-bottom">
+                <div class="accessories-selected-summary">
+                    <h3>Gewähltes Zubehör</h3>
+                    <div class="accessories-selected-count" id="selectedCount">0 Artikel gewählt</div>
+                    <div class="accessories-total-display" id="totalPrice">€0,00</div>
+                </div>
+                <button class="page-checkout-btn" onclick="proceedToCheckout()">Nur Zubehör</button>
+            </div>
+        </div>
+
+        <!-- Product Info Modal -->
+        <div class="product-modal" id="productModal" onclick="if(event.target === this) closeProductModal()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalProductName">Produktname</h2>
+                    <button class="modal-close" onclick="closeProductModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalProductDescription">Produktbeschreibung</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <!-- Cookie Consent -->
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.umd.js"></script>
+    <script src="cookieconsent-init.js"></script>
+    <script>
+        const pageSelectedAccessories = new Map();
+
+        function initializeAccessoriesPage() {
+            const savedAccessories = (typeof storageGet === 'function') ? storageGet('selectedAccessories') : localStorage.getItem('selectedAccessories');
+            if (savedAccessories) {
+                try {
+                    const entries = JSON.parse(savedAccessories);
+                    entries.forEach(([id, data]) => {
+                        pageSelectedAccessories.set(id, data);
+                    });
+                } catch (e) {
+                    console.error('Error loading accessories:', e);
+                }
+            }
+
+            const accessories = componentsData.accessories;
+            
+            const categories = {
+                'Kabel': accessories.filter(a => a.type === 'Kabel'),
+                'Monitor': accessories.filter(a => a.type === 'Monitor'),
+                'Tastatur': accessories.filter(a => a.type === 'Tastatur'),
+                'Maus': accessories.filter(a => a.type === 'Maus'),
+                'Headset': accessories.filter(a => a.type === 'Headset'),
+                'Zubehör': accessories.filter(a => a.type === 'Zubehör')
+            };
+
+            renderPageCables(categories['Kabel']);
+            renderPageMonitors(categories['Monitor']);
+            renderPageKeyboards(categories['Tastatur']);
+            renderPageMice(categories['Maus']);
+            renderPageHeadsets(categories['Headset']);
+            renderPageOther(categories['Zubehör']);
+            
+            updateAccessoriesSummaryPage();
+            updateCheckoutButtonLabel();
+        }
+
+        function hasPCConfiguration() {
+            try {
+                const saved = (typeof storageGet === 'function') ? storageGet('checkoutData') : localStorage.getItem('checkoutData');
+                if (!saved) return false;
+                const data = JSON.parse(saved);
+                return data && data.components && Object.keys(data.components).length > 0;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function updateCheckoutButtonLabel() {
+            const btn = document.querySelector('.page-checkout-btn');
+            if (!btn) return;
+            btn.textContent = hasPCConfiguration() ? 'Gesamtkauf' : 'Nur Zubehör';
+        }
+
+        function renderPageCables(cables) {
+            const container = document.getElementById('page-cables-grid');
+            if (!container) return;
+            
+            container.innerHTML = cables.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                    <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                        ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPageMonitors(monitors) {
+            const container = document.getElementById('page-monitors-grid');
+            if (!container) return;
+            
+            container.innerHTML = monitors.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                        <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                            ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPageKeyboards(keyboards) {
+            const container = document.getElementById('page-keyboards-grid');
+            if (!container) return;
+            
+            container.innerHTML = keyboards.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                        <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                            ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPageMice(mice) {
+            const container = document.getElementById('page-mice-grid');
+            if (!container) return;
+            
+            container.innerHTML = mice.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                        <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                            ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPageHeadsets(headsets) {
+            const container = document.getElementById('page-headsets-grid');
+            if (!container) return;
+            
+            container.innerHTML = headsets.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                        <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                            ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderPageOther(items) {
+            const container = document.getElementById('page-other-grid');
+            if (!container) return;
+            
+            container.innerHTML = items.map(item => `
+                <div class="accessory-item">
+                    <div class="accessory-image">
+                        hier könnte<br>ihr produkt<br>sein
+                        <div class="accessory-info-icon" onclick="showProductInfoPage(${item.id}, '${item.name.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}')">ℹ️</div>
+                    </div>
+                    <div class="accessory-name">${item.name}</div>
+                    <div class="accessory-price">€${item.price}</div>
+                        <button class="accessory-btn ${pageSelectedAccessories.has(item.id.toString()) ? 'selected' : ''}" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}" onclick="toggleAccessoryPage('${item.id}', '${item.name}', ${item.price}, this)">
+                            ${pageSelectedAccessories.has(item.id.toString()) ? 'Entfernen' : 'Hinzufügen'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleAccessoryPage(id, name, price, button) {
+            const item = pageSelectedAccessories.get(id);
+            
+            if (item) {
+                pageSelectedAccessories.delete(id);
+                button.classList.remove('selected');
+                button.textContent = 'Hinzufügen';
+            } else {
+                pageSelectedAccessories.set(id, { name, price });
+                button.classList.add('selected');
+                button.textContent = 'Entfernen';
+            }
+            
+            updateAccessoriesSummaryPage();
+        }
+
+        function updateAccessoriesSummaryPage() {
+            const countEl = document.getElementById('selectedCount');
+            const totalEl = document.getElementById('totalPrice');
+            
+            let total = 0;
+            pageSelectedAccessories.forEach((item) => {
+                total += item.price;
+            });
+            
+            countEl.textContent = pageSelectedAccessories.size + ' ' + (pageSelectedAccessories.size === 1 ? 'Artikel' : 'Artikel') + ' gewählt';
+            totalEl.textContent = '€' + total.toFixed(2).replace('.', ',');
+        }
+
+        function goBackToConfigurator() {
+            if (typeof storageSet === 'function') {
+                storageSet('selectedAccessories', JSON.stringify(Array.from(pageSelectedAccessories.entries())));
+            } else {
+                localStorage.setItem('selectedAccessories', JSON.stringify(Array.from(pageSelectedAccessories.entries())));
+            }
+            window.location.href = 'index.html';
+        }
+
+        function proceedToCheckout() {
+            if (typeof storageSet === 'function') {
+                storageSet('selectedAccessories', JSON.stringify(Array.from(pageSelectedAccessories.entries())));
+                storageSet('pageSource', 'accessories');
+            } else {
+                localStorage.setItem('selectedAccessories', JSON.stringify(Array.from(pageSelectedAccessories.entries())));
+                localStorage.setItem('pageSource', 'accessories');
+            }
+            window.location.href = 'checkout.html';
+        }
+
+        function showProductInfoPage(id, name, description) {
+            const modal = document.getElementById('productModal');
+            if (modal) {
+                document.getElementById('modalProductName').textContent = name;
+                document.getElementById('modalProductDescription').textContent = description;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAccessoriesPage();
+        });
+    </script>
+
+    <noscript>
+      <div class="cm__noscript">Bitte aktivieren Sie JavaScript oder lesen Sie unsere <a href="datenschutz.html">Datenschutzerklärung</a>, um Cookie-Präferenzen zu setzen.</div>
+    </noscript>
+</body>
+</html>
