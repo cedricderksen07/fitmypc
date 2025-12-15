@@ -300,3 +300,15 @@ if (typeof CookieConsent === 'undefined') {
     const resetInitialChecks = ()=>{ initialChecks = new WeakMap(); };
     // attach to consent events from the config callbacks
 }
+// 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte
+setTimeout(() => {
+  document.body.style.overflow = '';
+  const blocker = document.getElementById('siteBlocker');
+  if (blocker) blocker.remove();
+}, 2000);
+// 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte
+setTimeout(() => {
+  document.body.style.overflow = '';
+  const blocker = document.getElementById('siteBlocker');
+  if (blocker) blocker.remove();
+}, 2000);
