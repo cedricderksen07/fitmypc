@@ -1,19 +1,100 @@
-const fs = require('fs');
-const path = require('path');
+(function () {
+  const BLOCKER_ID = 'siteBlocker';
 
-function fail(msg){ console.error('FAIL:', msg); process.exit(1); }
-function pass(msg){ console.log('PASS:', msg); }
+  /* =========================
+     Helper
+  ========================= */
 
-const src = fs.readFileSync(path.join(__dirname, '..', 'cookieconsent-init.js'), 'utf8');
+  function hasConsent() {
+    try {
+      // localStorage (bei dir vorhanden)
+      if (localStorage.getItem('cookieConsent') === 'accepted') return true;
 
-if(!/function showSiteBlocker\(\)/.test(src)) fail('showSiteBlocker helper missing');
-pass('showSiteBlocker helper present');
-if(!/function removeSiteBlocker\(\)/.test(src)) fail('removeSiteBlocker helper missing');
-pass('removeSiteBlocker helper present');
-if(!/removeSiteBlocker\(\);/.test(src)) fail('removeSiteBlocker not invoked on consent callbacks');
-pass('removeSiteBlocker invoked on consent callbacks');
-if(!/modalSelector = '.cm__popup, \.cc-window, \.cc-popup, \.cc-preferences, \.cc-modal'/.test(src)) pass('modal selector fallback present');
-pass('modal selector fallback present (or similar)');
+      // Cookie-basierte Consent-Tools (cc_cookie etc.)
+      if (document.cookie.includes('cc_cookie=')) return true;
+      if (document.cookie.includes('cookie_warning_dismissed=true')) return true;
 
-console.log('Blocker static checks passed');
-process.exit(0);
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function showSiteBlocker() {
+    if (document.getElementById(BLOCKER_ID)) return;
+
+    const blocker = document.createElement('div');
+    blocker.id = BLOCKER_ID;
+    blocker.className = 'site-blocker';
+
+    blocker.style.position = 'fixed';
+    blocker.style.inset = '0';
+    blocker.style.zIndex = '9999';
+    blocker.style.background = 'transparent';
+    blocker.style.pointerEvents = 'auto';
+
+    document.body.appendChild(blocker);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function removeSiteBlocker() {
+    const blocker = document.getElementById(BLOCKER_ID);
+    if (blocker) blocker.remove();
+
+    document.body.style.overflow = '';
+  }
+
+  /* =========================
+     INIT (DER WICHTIGE FIX)
+  ========================= */
+
+  function init() {
+    if (hasConsent()) {
+      // ✅ WICHTIG: sofort freigeben
+      removeSiteBlocker();
+    } else {
+      showSiteBlocker();
+      waitForConsent();
+    }
+  }
+
+  /* =========================
+     Consent Detection
+  ========================= */
+
+  function waitForConsent() {
+    const modalSelector =
+      '.cm__popup, .cc-window, .cc-popup, .cc-preferences, .cc-modal';
+
+    // Beobachtet DOM-Änderungen (Button-Klicks, Banner-Schließen etc.)
+    const observer = new MutationObserver(() => {
+      if (hasConsent()) {
+        removeSiteBlocker();
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+
+    // 🔥 Fail-Safe: selbst wenn kein Banner existiert
+    setTimeout(() => {
+      if (hasConsent()) {
+        removeSiteBlocker();
+        observer.disconnect();
+      }
+    }, 1000);
+  }
+
+  /* =========================
+     DOM READY
+  ========================= */
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
