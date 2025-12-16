@@ -175,7 +175,7 @@ function initializeCookieConsent() {
     }
 
     function parseConsentCookie(){
-        const raw = getCookie('cc_cookie_fitmypc');
+        const raw = getCookie('cc_cookie_fitmypc_test');
         if(!raw) return null;
         try{
             return JSON.parse(raw);
