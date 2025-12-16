@@ -299,16 +299,12 @@ if (typeof CookieConsent === 'undefined') {
     // When preferences are saved or consent changes, reset captured initial state
     const resetInitialChecks = ()=>{ initialChecks = new WeakMap(); };
     // attach to consent events from the config callbacks
+
+    // 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte (2 Sekunden Fallback)
+    setTimeout(() => {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        const blocker = document.getElementById('siteBlocker');
+        if (blocker) blocker.remove();
+    }, 2000);
 }
-// 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte
-setTimeout(() => {
-  document.body.style.overflow = '';
-  const blocker = document.getElementById('siteBlocker');
-  if (blocker) blocker.remove();
-}, 2000);
-// 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte
-setTimeout(() => {
-  document.body.style.overflow = '';
-  const blocker = document.getElementById('siteBlocker');
-  if (blocker) blocker.remove();
-}, 2000);
