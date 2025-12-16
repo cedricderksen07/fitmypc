@@ -227,8 +227,8 @@ if (typeof CookieConsent === 'undefined') {
 
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
-        // Show on first visit and refresh consent every 30 days
-        cookie: { name: 'cc_cookie_demo1', expiresAfterDays: 30 },
+        // TEST MODE: Cookie expires immediately for testing (set back to 30+ for production)
+        cookie: { name: 'cc_cookie_demo1', expiresAfterDays: 0.0007 }, // ~1 minute for testing
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
