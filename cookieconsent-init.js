@@ -306,8 +306,8 @@ function initializeCookieConsent() {
 
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
-        // Cookie wird sofort gelöscht (Test-Modus - Banner erscheint bei jedem Refresh)
-        cookie: { name: 'cc_cookie_fitmypc', expiresAfterDays: 0 },
+        // Kein Cookie-Speicherung (Test-Modus - Banner erscheint bei jedem Refresh)
+        cookie: { name: 'cc_cookie_fitmypc' },
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
