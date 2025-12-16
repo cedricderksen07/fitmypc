@@ -306,8 +306,8 @@ function initializeCookieConsent() {
 
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
-        // Kein Cookie-Speicherung (Test-Modus - Banner erscheint bei jedem Refresh)
-        cookie: { name: 'cc_cookie_fitmypc' },
+        // Session-Cookie (wird bei jedem Browser-Neustart gelöscht)
+        cookie: { name: 'cc_cookie_fitmypc_test' },
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
