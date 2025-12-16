@@ -216,15 +216,11 @@ function initializeCookieConsent() {
     // Analytics provider control
     function loadGoogleAnalytics(){
         if(window.__cc_ga_loaded) return;
-        const s = document.createElement('script');
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-YFM6ZCS2VX';
-        s.async = true;
-        s.setAttribute('data-cc-analytics','ga');
-        document.head.appendChild(s);
-        const i = document.createElement('script');
-        i.setAttribute('data-cc-analytics','ga');
-        i.textContent = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-YFM6ZCS2VX',{ 'anonymize_ip': true });";
-        document.head.appendChild(i);
+        console.log('✅ Analytics akzeptiert - rufe gtag config auf');
+        // gtag.js ist bereits im HTML geladen, wir rufen nur config auf
+        if(typeof gtag === 'function'){
+            gtag('config', 'G-YFM6ZCS2VX', { 'anonymize_ip': true });
+        }
         window.__cc_ga_loaded = true;
     }
 
