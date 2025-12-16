@@ -389,6 +389,19 @@ function initializeCookieConsent() {
 let retryCount = 0;
 const maxRetries = 50; // 50 x 200ms = 10 Sekunden Wartezeit
 
+// Lösche alte Cookie-Versionen beim Laden der Seite
+function deleteOldCookies() {
+    const oldCookieNames = ['cc_cookie_fitmypc', 'cc_cookie_fitmypc_test', 'cc_cookie_fitmypc_v2'];
+    oldCookieNames.forEach(name => {
+        document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        document.cookie = name + '=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    });
+    console.log('🗑️ Alte Cookie-Versionen gelöscht');
+}
+
+// Lösche alte Cookies sofort
+deleteOldCookies();
+
 function tryInitialize() {
     console.log(`🔄 Initialization attempt ${retryCount + 1}/${maxRetries}`);
     
