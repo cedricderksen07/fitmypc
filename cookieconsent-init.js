@@ -4,6 +4,27 @@
  * - Centers modal, blocks page until explicit choice (except on privacy pages)
  */
 
+// Site blocker functions
+function showSiteBlocker(){
+    if(document.getElementById('siteBlocker')) return;
+    console.log('🚫 Creating site blocker overlay');
+    const d = document.createElement('div');
+    d.id = 'siteBlocker';
+    d.className = 'site-blocker';
+    d.setAttribute('aria-hidden','true');
+    document.body.appendChild(d);
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+}
+
+function removeSiteBlocker(){
+    console.log('✅ Removing site blocker overlay');
+    const el = document.getElementById('siteBlocker');
+    if(el) el.remove();
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+}
+
 // Main initialization function
 function initializeCookieConsent() {
     console.log('🔄 Attempting to initialize Cookie Consent...');
@@ -14,6 +35,14 @@ function initializeCookieConsent() {
     }
     
     console.log('✅ CookieConsent library is available');
+    
+    const isPrivacyPage = (typeof window !== 'undefined' && (/datenschutz\.html$/.test(window.location.pathname) || /impressum\.html$/.test(window.location.pathname)));
+    
+    // Show blocker immediately if not on privacy page
+    if (!isPrivacyPage) {
+        console.log('🚫 Showing site blocker (not a privacy page)');
+        showSiteBlocker();
+    }
     
     // Provide a lightweight fallback so privacy pages can attempt to open preferences before the library loads.
     if (typeof window !== 'undefined'){
@@ -35,25 +64,6 @@ function initializeCookieConsent() {
                 }, 250);
             };
         }
-    }
-    const isPrivacyPage = (typeof window !== 'undefined' && (/datenschutz\.html$/.test(window.location.pathname) || /impressum\.html$/.test(window.location.pathname)));
-
-    function showSiteBlocker(){
-        if(document.getElementById('siteBlocker')) return;
-        const d = document.createElement('div');
-        d.id = 'siteBlocker';
-        d.className = 'site-blocker';
-        d.setAttribute('aria-hidden','true');
-        document.body.appendChild(d);
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function removeSiteBlocker(){
-        const el = document.getElementById('siteBlocker');
-        if(el) el.remove();
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
     }
 
     function centerConsentModal(node){
@@ -89,14 +99,6 @@ function initializeCookieConsent() {
     });
     mo.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style','class'] });
     document.querySelectorAll(modalSelector).forEach(centerConsentModal);
-
-    if (!isPrivacyPage){
-        if (document.readyState === 'loading'){
-            window.addEventListener('DOMContentLoaded', showSiteBlocker, { once: true });
-        } else {
-            showSiteBlocker();
-        }
-    }
 
     // periodic retry to catch late modifications
     let retries = 0;
