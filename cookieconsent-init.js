@@ -4,9 +4,17 @@
  * - Centers modal, blocks page until explicit choice (except on privacy pages)
  */
 
-// If CookieConsent UMD isn't available, warn and skip execution.
-if (typeof CookieConsent === 'undefined') {
-    console.warn('CookieConsent not found. Ensure the UMD build is included before cookieconsent-init.js');
+// Main initialization function
+function initializeCookieConsent() {
+    console.log('🔄 Attempting to initialize Cookie Consent...');
+    
+    if (typeof CookieConsent === 'undefined') {
+        console.warn('⚠️ CookieConsent library not loaded yet, will retry...');
+        return false;
+    }
+    
+    console.log('✅ CookieConsent library is available');
+    
     // Provide a lightweight fallback so privacy pages can attempt to open preferences before the library loads.
     if (typeof window !== 'undefined'){
         window.CookiePrefs = window.CookiePrefs || {};
@@ -28,7 +36,6 @@ if (typeof CookieConsent === 'undefined') {
             };
         }
     }
-} else {
     const isPrivacyPage = (typeof window !== 'undefined' && (/datenschutz\.html$/.test(window.location.pathname) || /impressum\.html$/.test(window.location.pathname)));
 
     function showSiteBlocker(){
@@ -314,4 +321,43 @@ if (typeof CookieConsent === 'undefined') {
         const blocker = document.getElementById('siteBlocker');
         if (blocker) blocker.remove();
     }, 2000);
+    
+    return true;
+}
+
+// Retry mechanism with multiple attempts
+let retryCount = 0;
+const maxRetries = 20;
+
+function tryInitialize() {
+    console.log(`🔄 Initialization attempt ${retryCount + 1}/${maxRetries}`);
+    
+    if (initializeCookieConsent()) {
+        console.log('✅ Cookie Consent successfully initialized!');
+        return;
+    }
+    
+    retryCount++;
+    if (retryCount < maxRetries) {
+        setTimeout(tryInitialize, 200); // Retry every 200ms
+    } else {
+        console.error('❌ Failed to initialize Cookie Consent after', maxRetries, 'attempts');
+        // Remove blocker as fallback
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        const blocker = document.getElementById('siteBlocker');
+        if (blocker) blocker.remove();
+    }
+}
+
+// Start initialization when DOM is ready
+if (document.readyState === 'loading') {
+    console.log('📄 DOM is loading, waiting for DOMContentLoaded...');
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('✅ DOM ready, starting Cookie Consent initialization');
+        setTimeout(tryInitialize, 100); // Small delay to ensure all scripts are loaded
+    });
+} else {
+    console.log('✅ DOM already ready, starting Cookie Consent initialization');
+    setTimeout(tryInitialize, 100);
 }
