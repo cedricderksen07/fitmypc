@@ -288,8 +288,8 @@ function initializeCookieConsent() {
 
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
-        // TEST MODE: Cookie expires immediately for testing (set back to 30+ for production)
-        cookie: { name: 'cc_cookie_fitmypc', expiresAfterDays: 0.0007 }, // ~1 minute for testing
+        // Cookie wird 30 Tage gespeichert (Produktion)
+        cookie: { name: 'cc_cookie_fitmypc', expiresAfterDays: 30 },
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
