@@ -186,20 +186,30 @@ function initializeCookieConsent() {
     }
 
     function isCategoryEnabled(cat){
+        console.log(`🔍 isCategoryEnabled('${cat}') aufgerufen`);
         // Attempt library API
         try{
             if(window.CookieConsent && typeof CookieConsent.get === 'function'){
                 const prefs = CookieConsent.get();
+                console.log('📦 CookieConsent.get() Ergebnis:', prefs);
                 if(prefs && prefs.categories && prefs.categories[cat] && typeof prefs.categories[cat].enabled !== 'undefined'){
-                    return !!prefs.categories[cat].enabled;
+                    const enabled = !!prefs.categories[cat].enabled;
+                    console.log(`✓ ${cat} (via API):`, enabled);
+                    return enabled;
                 }
             }
-        }catch(e){}
+        }catch(e){
+            console.error('❌ Fehler beim Abrufen via API:', e);
+        }
         // Fallback: read cookie
         const parsed = parseConsentCookie();
+        console.log('🍪 Parsed cookie:', parsed);
         if(parsed && parsed.categories && typeof parsed.categories[cat] !== 'undefined'){
-            return !!parsed.categories[cat];
+            const enabled = !!parsed.categories[cat];
+            console.log(`✓ ${cat} (via cookie):`, enabled);
+            return enabled;
         }
+        console.log(`⚠️ ${cat}: nicht gefunden, return false`);
         return false;
     }
 
@@ -232,12 +242,20 @@ function initializeCookieConsent() {
     }
 
     function applyPreferences(){
-        if(isCategoryEnabled('analytics')){
+        console.log('🔄 applyPreferences aufgerufen');
+        const analyticsEnabled = isCategoryEnabled('analytics');
+        const advertisingEnabled = isCategoryEnabled('advertising');
+        console.log('📊 Analytics enabled:', analyticsEnabled);
+        console.log('📢 Advertising enabled:', advertisingEnabled);
+        
+        if(analyticsEnabled){
+            console.log('✅ Lade Google Analytics...');
             loadGoogleAnalytics();
         } else {
+            console.log('❌ Deaktiviere Google Analytics...');
             disableGoogleAnalytics();
         }
-        if(isCategoryEnabled('advertising')){
+        if(advertisingEnabled){
             loadAdvertising();
         } else {
             disableAdvertising();
@@ -299,7 +317,7 @@ function initializeCookieConsent() {
         onChange: () => { removeSiteBlocker(); applyPreferences(); resetInitialChecks(); },
         categories: {
             necessary: { readOnly: true, enabled: true },
-            analytics: { autoClear: { cookies: [{ name: /^(_ga|_gid)/ }] } },
+            analytics: { enabled: false, autoClear: { cookies: [{ name: /^(_ga|_gid)/ }] } },
             advertising: { enabled: false, autoClear: { cookies: [{ name: /^(_gcl_|_fbp|fr|IDE)/ }] } }
         },
         language: {
