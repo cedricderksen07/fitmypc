@@ -315,21 +315,13 @@ function initializeCookieConsent() {
     // When preferences are saved or consent changes, reset captured initial state
     const resetInitialChecks = ()=>{ initialChecks = new WeakMap(); };
     // attach to consent events from the config callbacks
-
-    // 🔥 Finaler Not-Aus gegen kaputte Dritt-Skripte (2 Sekunden Fallback)
-    setTimeout(() => {
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        const blocker = document.getElementById('siteBlocker');
-        if (blocker) blocker.remove();
-    }, 2000);
     
     return true;
 }
 
 // Retry mechanism with multiple attempts
 let retryCount = 0;
-const maxRetries = 20;
+const maxRetries = 50; // 50 x 200ms = 10 Sekunden Wartezeit
 
 function tryInitialize() {
     console.log(`🔄 Initialization attempt ${retryCount + 1}/${maxRetries}`);
