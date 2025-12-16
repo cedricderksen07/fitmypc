@@ -106,7 +106,7 @@ if (typeof CookieConsent === 'undefined') {
     }
 
     function parseConsentCookie(){
-        const raw = getCookie('cc_cookie_demo1');
+        const raw = getCookie('cc_cookie_fitmypc');
         if(!raw) return null;
         try{
             return JSON.parse(raw);
@@ -228,7 +228,7 @@ if (typeof CookieConsent === 'undefined') {
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
         // TEST MODE: Cookie expires immediately for testing (set back to 30+ for production)
-        cookie: { name: 'cc_cookie_demo1', expiresAfterDays: 0.0007 }, // ~1 minute for testing
+        cookie: { name: 'cc_cookie_fitmypc', expiresAfterDays: 0.0007 }, // ~1 minute for testing
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
@@ -260,14 +260,21 @@ if (typeof CookieConsent === 'undefined') {
     let consentInitialized = false;
     function initConsent(){
         if(consentInitialized) return;
+        console.log('🍪 Initializing Cookie Consent...');
         CookieConsent.run(consentConfig);
         // after running the library ensure we capture initial state for existing modals
         document.querySelectorAll(modalSelector).forEach(n=>{ captureInitialChecks(n); updateSaveButtonState(n); });
         consentInitialized = true;
+        console.log('✅ Cookie Consent initialized');
     }
 
     // initialize now on non-privacy pages
-    if(!isPrivacyPage) { initConsent(); }
+    if(!isPrivacyPage) { 
+        console.log('🚀 Starting Cookie Consent (not a privacy page)');
+        initConsent(); 
+    } else {
+        console.log('📄 Privacy page detected - Cookie Consent will be loaded on demand');
+    }
 
     // expose a small API to allow opening preferences from privacy page
     window.CookiePrefs = window.CookiePrefs || {};
