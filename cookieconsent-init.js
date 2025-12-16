@@ -25,6 +25,66 @@ function removeSiteBlocker(){
     document.body.style.overflow = '';
 }
 
+// Global function to disable analytics (auch außerhalb des Cookie-Consent verfügbar)
+function disableGoogleAnalytics(){
+    document.querySelectorAll('script[data-cc-analytics]').forEach(n=>n.remove());
+    window.__cc_ga_loaded = false;
+    // clear common GA cookies
+    ['_ga','_gid','_gat','_gcl_au'].forEach(c=>{ document.cookie = c + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'; });
+    try{ delete window.gtag; delete window.dataLayer; }catch(e){}
+}
+
+function showFallbackNotice(){
+    console.warn('⚠️ Cookie Banner konnte nicht geladen werden - zeige statischen Hinweis');
+    
+    // Entferne den grauen Blocker
+    const blocker = document.getElementById('siteBlocker');
+    if(blocker) blocker.remove();
+    
+    // Erstelle statischen Cookie-Hinweis
+    const notice = document.createElement('div');
+    notice.id = 'cookieFallbackNotice';
+    notice.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2c3e50;
+        color: white;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 999999;
+        max-width: 600px;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+    `;
+    notice.innerHTML = `
+        <strong style="display: block; margin-bottom: 10px; color: #ffa500;">⚠️ Cookie-Hinweis</strong>
+        <p style="margin: 0 0 15px 0;">
+            Aus technischen Gründen konnte der Cookie-Banner nicht geladen werden. 
+            Diese Website verwendet derzeit nur <strong>technisch notwendige Cookies</strong> 
+            für den Betrieb der Seite. Es werden keine Analyse- oder Werbe-Cookies geladen.
+        </p>
+        <button onclick="document.getElementById('cookieFallbackNotice').remove()" 
+                style="background: #1565c0; color: white; border: none; padding: 8px 20px; 
+                       border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 600;">
+            Verstanden
+        </button>
+    `;
+    document.body.appendChild(notice);
+    
+    // Erlaube Scrollen wieder
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    
+    // Stelle sicher, dass keine Analytics geladen werden
+    window.__cc_consent_given = false;
+    disableGoogleAnalytics();
+}
+
 // Main initialization function
 function initializeCookieConsent() {
     console.log('🔄 Attempting to initialize Cookie Consent...');
@@ -156,14 +216,6 @@ function initializeCookieConsent() {
         i.textContent = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config','G-YFM6ZCS2VX',{ 'anonymize_ip': true });";
         document.head.appendChild(i);
         window.__cc_ga_loaded = true;
-    }
-
-    function disableGoogleAnalytics(){
-        document.querySelectorAll('script[data-cc-analytics]').forEach(n=>n.remove());
-        window.__cc_ga_loaded = false;
-        // clear common GA cookies
-        ['_ga','_gid','_gat','_gcl_au'].forEach(c=>{ document.cookie = c + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'; });
-        try{ delete window.gtag; delete window.dataLayer; }catch(e){}
     }
 
     // Advertising placeholder control
@@ -336,11 +388,8 @@ function tryInitialize() {
         setTimeout(tryInitialize, 200); // Retry every 200ms
     } else {
         console.error('❌ Failed to initialize Cookie Consent after', maxRetries, 'attempts');
-        // Remove blocker as fallback
-        document.body.style.overflow = '';
-        document.documentElement.style.overflow = '';
-        const blocker = document.getElementById('siteBlocker');
-        if (blocker) blocker.remove();
+        // Zeige statischen Hinweis statt nur Blocker zu entfernen
+        showFallbackNotice();
     }
 }
 
