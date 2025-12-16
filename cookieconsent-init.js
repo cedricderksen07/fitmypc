@@ -175,7 +175,7 @@ function initializeCookieConsent() {
     }
 
     function parseConsentCookie(){
-        const raw = getCookie('cc_cookie_fitmypc_test');
+        const raw = getCookie('cc_cookie_fitmypc_v2');
         if(!raw) return null;
         try{
             return JSON.parse(raw);
@@ -303,7 +303,7 @@ function initializeCookieConsent() {
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
         // Session-Cookie (wird bei jedem Browser-Neustart gelöscht)
-        cookie: { name: 'cc_cookie_fitmypc_test' },
+        cookie: { name: 'cc_cookie_fitmypc_v2' },
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
