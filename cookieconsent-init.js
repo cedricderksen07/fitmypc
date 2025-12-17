@@ -261,6 +261,14 @@ function initializeCookieConsent() {
         console.log('📊 Analytics enabled:', analyticsEnabled);
         console.log('📢 Advertising enabled:', advertisingEnabled);
         
+        // Sende individuelle Einstellungen an GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'cookie_preferences_saved',
+            'analytics': analyticsEnabled ? 'accepted' : 'rejected',
+            'advertising': advertisingEnabled ? 'accepted' : 'rejected'
+        });
+        
         if(analyticsEnabled){
             console.log('✅ Lade Google Analytics...');
             loadGoogleAnalytics();
