@@ -29,19 +29,9 @@ function removeSiteBlocker(){
 function disableGoogleAnalytics(){
     console.log('❌ Analytics abgelehnt');
     
-    // Sende Ablehnung an GTM
+    // Sende Event an GTM
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        'event': 'cookie_consent_analytics',
-        'consent': 'denied'
-    });
-    
-    // Update Google Consent Mode
-    if(typeof gtag === 'function'){
-        gtag('consent', 'update', {
-            'analytics_storage': 'denied'
-        });
-    }
+    window.dataLayer.push({'event': 'analytics_rejected'});
     
     window.__cc_ga_loaded = false;
     
@@ -233,21 +223,11 @@ function initializeCookieConsent() {
     // Analytics provider control
     function loadGoogleAnalytics(){
         if(window.__cc_ga_loaded) return;
-        console.log('✅ Analytics akzeptiert - sende Consent an Google Tag Manager');
+        console.log('✅ Analytics akzeptiert - sende Event an Google Tag Manager');
         
-        // Sende Consent-Update an GTM über dataLayer
+        // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'cookie_consent_analytics',
-            'consent': 'granted'
-        });
-        
-        // Update Google Consent Mode (falls verwendet)
-        if(typeof gtag === 'function'){
-            gtag('consent', 'update', {
-                'analytics_storage': 'granted'
-            });
-        }
+        window.dataLayer.push({'event': 'analytics_accepted'});
         
         window.__cc_ga_loaded = true;
     }
@@ -255,23 +235,11 @@ function initializeCookieConsent() {
     // Advertising placeholder control
     function loadAdvertising(){
         if(window.__cc_ads_loaded) return;
-        console.log('✅ Advertising akzeptiert - sende Consent an Google Tag Manager');
+        console.log('✅ Advertising akzeptiert - sende Event an Google Tag Manager');
         
-        // Sende Consent-Update an GTM über dataLayer
+        // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'cookie_consent_advertising',
-            'consent': 'granted'
-        });
-        
-        // Update Google Consent Mode (falls verwendet)
-        if(typeof gtag === 'function'){
-            gtag('consent', 'update', {
-                'ad_storage': 'granted',
-                'ad_user_data': 'granted',
-                'ad_personalization': 'granted'
-            });
-        }
+        window.dataLayer.push({'event': 'advertising_accepted'});
         
         window.__cc_ads_loaded = true;
     }
@@ -279,21 +247,9 @@ function initializeCookieConsent() {
     function disableAdvertising(){
         console.log('❌ Advertising abgelehnt');
         
-        // Sende Ablehnung an GTM
+        // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'cookie_consent_advertising',
-            'consent': 'denied'
-        });
-        
-        // Update Google Consent Mode
-        if(typeof gtag === 'function'){
-            gtag('consent', 'update', {
-                'ad_storage': 'denied',
-                'ad_user_data': 'denied',
-                'ad_personalization': 'denied'
-            });
-        }
+        window.dataLayer.push({'event': 'advertising_rejected'});
         
         window.__cc_ads_loaded = false;
     }
