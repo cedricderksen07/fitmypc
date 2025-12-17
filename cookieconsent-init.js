@@ -267,19 +267,19 @@ function initializeCookieConsent() {
             advertising: advertisingEnabled ? 'accepted' : 'rejected'
         };
         
-        // Sende individuelle Einstellungen an GTM mit korrekter Struktur
+        // Sende individuelle Einstellungen an GTM mit boolean-Werten (GTM-kompatibel)
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-            'event': 'cookie_consent_update',
-            'cookie_analytics': preferences.analytics,
-            'cookie_advertising': preferences.advertising,
-            'cookie_necessary': 'accepted'
+            event: 'cookie_consent_update',
+            cookie_analytics: analyticsEnabled,
+            cookie_advertising: advertisingEnabled,
+            cookie_necessary: true
         });
         
         console.log('📤 DataLayer Event gesendet:', {
             event: 'cookie_consent_update',
-            cookie_analytics: preferences.analytics,
-            cookie_advertising: preferences.advertising
+            cookie_analytics: analyticsEnabled,
+            cookie_advertising: advertisingEnabled
         });
         
         if(analyticsEnabled){
