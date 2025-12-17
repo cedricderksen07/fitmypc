@@ -300,10 +300,6 @@ function initializeCookieConsent() {
             necessary: 'accepted' // Immer aktiviert
         };
     };
-        } else {
-            disableAdvertising();
-        }
-    }
 
     // Enhance buttons in modal: add prominent classes for styling
     function enhanceButtons(root){
