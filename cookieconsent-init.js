@@ -27,11 +27,28 @@ function removeSiteBlocker(){
 
 // Global function to disable analytics (auch außerhalb des Cookie-Consent verfügbar)
 function disableGoogleAnalytics(){
-    document.querySelectorAll('script[data-cc-analytics]').forEach(n=>n.remove());
+    console.log('❌ Analytics abgelehnt');
+    
+    // Sende Ablehnung an GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'cookie_consent_analytics',
+        'consent': 'denied'
+    });
+    
+    // Update Google Consent Mode
+    if(typeof gtag === 'function'){
+        gtag('consent', 'update', {
+            'analytics_storage': 'denied'
+        });
+    }
+    
     window.__cc_ga_loaded = false;
-    // clear common GA cookies
-    ['_ga','_gid','_gat','_gcl_au'].forEach(c=>{ document.cookie = c + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'; });
-    try{ delete window.gtag; delete window.dataLayer; }catch(e){}
+    
+    // Clear common GA cookies
+    ['_ga','_gid','_gat','_gcl_au'].forEach(c=>{ 
+        document.cookie = c + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'; 
+    });
 }
 
 function showFallbackNotice(){
@@ -216,24 +233,68 @@ function initializeCookieConsent() {
     // Analytics provider control
     function loadGoogleAnalytics(){
         if(window.__cc_ga_loaded) return;
-        console.log('✅ Analytics akzeptiert - rufe gtag config auf');
-        // gtag.js ist bereits im HTML geladen, wir rufen nur config auf
+        console.log('✅ Analytics akzeptiert - sende Consent an Google Tag Manager');
+        
+        // Sende Consent-Update an GTM über dataLayer
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'cookie_consent_analytics',
+            'consent': 'granted'
+        });
+        
+        // Update Google Consent Mode (falls verwendet)
         if(typeof gtag === 'function'){
-            gtag('config', 'G-YFM6ZCS2VX', { 'anonymize_ip': true });
+            gtag('consent', 'update', {
+                'analytics_storage': 'granted'
+            });
         }
+        
         window.__cc_ga_loaded = true;
     }
 
     // Advertising placeholder control
     function loadAdvertising(){
         if(window.__cc_ads_loaded) return;
-        // Placeholder: real ad script should be added here when consent is given
+        console.log('✅ Advertising akzeptiert - sende Consent an Google Tag Manager');
+        
+        // Sende Consent-Update an GTM über dataLayer
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'cookie_consent_advertising',
+            'consent': 'granted'
+        });
+        
+        // Update Google Consent Mode (falls verwendet)
+        if(typeof gtag === 'function'){
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
+            });
+        }
+        
         window.__cc_ads_loaded = true;
     }
 
     function disableAdvertising(){
-        // Remove any advertising scripts we added earlier (marked with data-cc-ad)
-        document.querySelectorAll('script[data-cc-ad]').forEach(n=>n.remove());
+        console.log('❌ Advertising abgelehnt');
+        
+        // Sende Ablehnung an GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'cookie_consent_advertising',
+            'consent': 'denied'
+        });
+        
+        // Update Google Consent Mode
+        if(typeof gtag === 'function'){
+            gtag('consent', 'update', {
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied'
+            });
+        }
+        
         window.__cc_ads_loaded = false;
     }
 
