@@ -261,12 +261,18 @@ function initializeCookieConsent() {
         console.log('📊 Analytics enabled:', analyticsEnabled);
         console.log('📢 Advertising enabled:', advertisingEnabled);
         
+        // Erstelle Rückgabeobjekt mit Einstellungen
+        const preferences = {
+            analytics: analyticsEnabled ? 'accepted' : 'rejected',
+            advertising: advertisingEnabled ? 'accepted' : 'rejected'
+        };
+        
         // Sende individuelle Einstellungen an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             'event': 'cookie_preferences_saved',
-            'analytics': analyticsEnabled ? 'accepted' : 'rejected',
-            'advertising': advertisingEnabled ? 'accepted' : 'rejected'
+            'analytics': preferences.analytics,
+            'advertising': preferences.advertising
         });
         
         if(analyticsEnabled){
@@ -278,6 +284,22 @@ function initializeCookieConsent() {
         }
         if(advertisingEnabled){
             loadAdvertising();
+        } else {
+            disableAdvertising();
+        }
+        
+        // Gebe Einstellungen zurück
+        return preferences;
+    }
+    
+    // Globale Funktion um Cookie-Einstellungen abzufragen
+    window.getCookiePreferences = function(){
+        return {
+            analytics: isCategoryEnabled('analytics') ? 'accepted' : 'rejected',
+            advertising: isCategoryEnabled('advertising') ? 'accepted' : 'rejected',
+            necessary: 'accepted' // Immer aktiviert
+        };
+    };
         } else {
             disableAdvertising();
         }
