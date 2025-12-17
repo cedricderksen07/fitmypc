@@ -298,15 +298,6 @@ function initializeCookieConsent() {
         // Gebe Einstellungen zurück
         return preferences;
     }
-    
-    // Globale Funktion um Cookie-Einstellungen abzufragen
-    window.getCookiePreferences = function(){
-        return {
-            analytics: isCategoryEnabled('analytics') ? 'accepted' : 'rejected',
-            advertising: isCategoryEnabled('advertising') ? 'accepted' : 'rejected',
-            necessary: 'accepted' // Immer aktiviert
-        };
-    };
 
     // Enhance buttons in modal: add prominent classes for styling
     function enhanceButtons(root){
@@ -451,6 +442,39 @@ function deleteOldCookies() {
 
 // Lösche alte Cookies sofort
 deleteOldCookies();
+
+// Globale Funktion um Cookie-Einstellungen abzufragen (außerhalb der Init-Funktion)
+window.getCookiePreferences = function(){
+    // Lese Cookie direkt
+    function getCookie(name){
+        const m = document.cookie.match(new RegExp('(?:^|; )'+name+'=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : null;
+    }
+    
+    const raw = getCookie('cc_cookie_fitmypc_v2');
+    if(!raw) {
+        return {
+            analytics: 'rejected',
+            advertising: 'rejected',
+            necessary: 'accepted'
+        };
+    }
+    
+    try {
+        const parsed = JSON.parse(raw);
+        return {
+            analytics: parsed.categories && parsed.categories.analytics ? 'accepted' : 'rejected',
+            advertising: parsed.categories && parsed.categories.advertising ? 'accepted' : 'rejected',
+            necessary: 'accepted'
+        };
+    } catch(e) {
+        return {
+            analytics: 'rejected',
+            advertising: 'rejected',
+            necessary: 'accepted'
+        };
+    }
+};
 
 function tryInitialize() {
     console.log(`🔄 Initialization attempt ${retryCount + 1}/${maxRetries}`);
