@@ -288,7 +288,71 @@ function initializeCookieConsent() {
         window.__cc_ga_loaded = true;
     }
 
+    function loadAdvertising(){
+        if(window.__cc_ads_loaded) return;
+        console.log('✅ Advertising akzeptiert - sende Event an Google Tag Manager');
+        
+        // Sende Event an GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'event': 'advertising_accepted'});
+        
+        window.__cc_ads_loaded = true;
+    }
 
+    function disableAdvertising(){
+        console.log('❌ Advertising abgelehnt');
+        
+        // Sende Event an GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({'event': 'advertising_rejected'});
+        
+        window.__cc_ads_loaded = false;
+    }
+
+    function applyPreferences(){
+        console.log('🔄 applyPreferences aufgerufen');
+        const analyticsEnabled = isCategoryEnabled('analytics');
+        const advertisingEnabled = isCategoryEnabled('advertising');
+        console.log('📊 Analytics enabled:', analyticsEnabled);
+        console.log('📢 Advertising enabled:', advertisingEnabled);
+        
+        // Erstelle Rückgabeobjekt mit Einstellungen
+        const preferences = {
+            analytics: analyticsEnabled ? 'accepted' : 'rejected',
+            advertising: advertisingEnabled ? 'accepted' : 'rejected'
+        };
+        
+        // Sende individuelle Einstellungen an GTM mit boolean-Werten (GTM-kompatibel)
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'cookie_consent_update',
+            cookie_analytics: analyticsEnabled,
+            cookie_advertising: advertisingEnabled,
+            cookie_necessary: true
+        });
+        
+        console.log('📤 DataLayer Event gesendet:', {
+            event: 'cookie_consent_update',
+            cookie_analytics: analyticsEnabled,
+            cookie_advertising: advertisingEnabled
+        });
+        
+        if(analyticsEnabled){
+            console.log('✅ Lade Google Analytics...');
+            loadGoogleAnalytics();
+        } else {
+            console.log('❌ Deaktiviere Google Analytics...');
+            disableGoogleAnalytics();
+        }
+        if(advertisingEnabled){
+            loadAdvertising();
+        } else {
+            disableAdvertising();
+        }
+        
+        // Gebe Einstellungen zurück
+        return preferences;
+    }
 
     // Enhance buttons in modal: add prominent classes for styling
     function enhanceButtons(root){
