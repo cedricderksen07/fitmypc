@@ -4,6 +4,55 @@
  * - Centers modal, blocks page until explicit choice (except on privacy pages)
  */
 
+// Cookie-Funktionen für GTM-Integration
+function setCookieAccepted() {
+    console.log('✅ Alle Cookies akzeptiert');
+    document.cookie = 'cookieAccepted=true; path=/; max-age=31536000'; // 1 Jahr
+    document.cookie = 'cookieAnalytics=true; path=/; max-age=31536000';
+    document.cookie = 'cookieAdvertising=true; path=/; max-age=31536000';
+    
+    // Sende Event an GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'cookie_consent_update',
+        cookie_analytics: true,
+        cookie_advertising: true,
+        cookie_necessary: true
+    });
+}
+
+function setCookieRejected() {
+    console.log('❌ Alle Cookies abgelehnt');
+    document.cookie = 'cookieAccepted=false; path=/; max-age=31536000';
+    document.cookie = 'cookieAnalytics=false; path=/; max-age=31536000';
+    document.cookie = 'cookieAdvertising=false; path=/; max-age=31536000';
+    
+    // Sende Event an GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'cookie_consent_update',
+        cookie_analytics: false,
+        cookie_advertising: false,
+        cookie_necessary: true
+    });
+}
+
+function setCookieSettings(analytics, advertising) {
+    console.log('⚙️ Cookie-Einstellungen gespeichert:', { analytics: analytics, advertising: advertising });
+    document.cookie = 'cookieAccepted=' + (analytics || advertising) + '; path=/; max-age=31536000';
+    document.cookie = 'cookieAnalytics=' + analytics + '; path=/; max-age=31536000';
+    document.cookie = 'cookieAdvertising=' + advertising + '; path=/; max-age=31536000';
+    
+    // Sende Event an GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'cookie_consent_update',
+        cookie_analytics: analytics,
+        cookie_advertising: advertising,
+        cookie_necessary: true
+    });
+}
+
 // Site blocker functions
 function showSiteBlocker(){
     if(document.getElementById('siteBlocker')) return;
@@ -232,72 +281,7 @@ function initializeCookieConsent() {
         window.__cc_ga_loaded = true;
     }
 
-    // Advertising placeholder control
-    function loadAdvertising(){
-        if(window.__cc_ads_loaded) return;
-        console.log('✅ Advertising akzeptiert - sende Event an Google Tag Manager');
-        
-        // Sende Event an GTM
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({'event': 'advertising_accepted'});
-        
-        window.__cc_ads_loaded = true;
-    }
 
-    function disableAdvertising(){
-        console.log('❌ Advertising abgelehnt');
-        
-        // Sende Event an GTM
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({'event': 'advertising_rejected'});
-        
-        window.__cc_ads_loaded = false;
-    }
-
-    function applyPreferences(){
-        console.log('🔄 applyPreferences aufgerufen');
-        const analyticsEnabled = isCategoryEnabled('analytics');
-        const advertisingEnabled = isCategoryEnabled('advertising');
-        console.log('📊 Analytics enabled:', analyticsEnabled);
-        console.log('📢 Advertising enabled:', advertisingEnabled);
-        
-        // Erstelle Rückgabeobjekt mit Einstellungen
-        const preferences = {
-            analytics: analyticsEnabled ? 'accepted' : 'rejected',
-            advertising: advertisingEnabled ? 'accepted' : 'rejected'
-        };
-        
-        // Sende individuelle Einstellungen an GTM mit boolean-Werten (GTM-kompatibel)
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            event: 'cookie_consent_update',
-            cookie_analytics: analyticsEnabled,
-            cookie_advertising: advertisingEnabled,
-            cookie_necessary: true
-        });
-        
-        console.log('📤 DataLayer Event gesendet:', {
-            event: 'cookie_consent_update',
-            cookie_analytics: analyticsEnabled,
-            cookie_advertising: advertisingEnabled
-        });
-        
-        if(analyticsEnabled){
-            console.log('✅ Lade Google Analytics...');
-            loadGoogleAnalytics();
-        } else {
-            console.log('❌ Deaktiviere Google Analytics...');
-            disableGoogleAnalytics();
-        }
-        if(advertisingEnabled){
-            loadAdvertising();
-        } else {
-            disableAdvertising();
-        }
-        
-        // Gebe Einstellungen zurück
-        return preferences;
-    }
 
     // Enhance buttons in modal: add prominent classes for styling
     function enhanceButtons(root){
