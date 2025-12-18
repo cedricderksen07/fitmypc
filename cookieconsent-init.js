@@ -5,6 +5,8 @@
  */
 
 // Cookie-Funktionen für GTM-Integration
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
 
 function setCookieAccepted() {
     console.log('✅ Alle Cookies akzeptiert');
@@ -12,6 +14,14 @@ function setCookieAccepted() {
     document.cookie = 'cookieAnalytics=true; path=/; max-age=31536000';
     document.cookie = 'cookieAdvertising=true; path=/; max-age=31536000';
     
+    // Google Consent Mode v2 Update
+    gtag('consent', 'update', {
+        'analytics_storage': 'granted',
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted'
+    });
+
     // Sende Event an GTM
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -30,6 +40,14 @@ function setCookieRejected() {
     document.cookie = 'cookieAnalytics=false; path=/; max-age=31536000';
     document.cookie = 'cookieAdvertising=false; path=/; max-age=31536000';
     
+    // Google Consent Mode v2 Update
+    gtag('consent', 'update', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+    });
+
     // Sende Event an GTM
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -48,6 +66,14 @@ function setCookieSettings(analytics, advertising) {
     document.cookie = 'cookieAnalytics=' + analytics + '; path=/; max-age=31536000';
     document.cookie = 'cookieAdvertising=' + advertising + '; path=/; max-age=31536000';
     
+    // Google Consent Mode v2 Update
+    gtag('consent', 'update', {
+        'analytics_storage': analytics ? 'granted' : 'denied',
+        'ad_storage': advertising ? 'granted' : 'denied',
+        'ad_user_data': advertising ? 'granted' : 'denied',
+        'ad_personalization': advertising ? 'granted' : 'denied'
+    });
+
     // Sende Event an GTM
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -85,6 +111,11 @@ function removeSiteBlocker(){
 function disableGoogleAnalytics(){
     console.log('❌ Analytics abgelehnt');
     
+    // Google Consent Mode v2 Update
+    gtag('consent', 'update', {
+        'analytics_storage': 'denied'
+    });
+
     // Sende Event an GTM
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({'event': 'analytics_rejected'});
@@ -281,6 +312,11 @@ function initializeCookieConsent() {
         if(window.__cc_ga_loaded) return;
         console.log('✅ Analytics akzeptiert - sende Event an Google Tag Manager');
         
+        // Google Consent Mode v2 Update
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+        });
+
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'analytics_accepted'});
@@ -292,6 +328,13 @@ function initializeCookieConsent() {
         if(window.__cc_ads_loaded) return;
         console.log('✅ Advertising akzeptiert - sende Event an Google Tag Manager');
         
+        // Google Consent Mode v2 Update
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted'
+        });
+
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'advertising_accepted'});
@@ -302,6 +345,13 @@ function initializeCookieConsent() {
     function disableAdvertising(){
         console.log('❌ Advertising abgelehnt');
         
+        // Google Consent Mode v2 Update
+        gtag('consent', 'update', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
+        });
+
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'advertising_rejected'});
