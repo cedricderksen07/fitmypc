@@ -5,9 +5,10 @@
  */
 
 // Cookie-Funktionen für GTM-Integration
+
 function setCookieAccepted() {
     console.log('✅ Alle Cookies akzeptiert');
-    document.cookie = 'cookieAccepted=true; path=/; max-age=31536000'; // 1 Jahr
+    document.cookie = 'cookieAccepted=true; path=/; max-age=31536000';
     document.cookie = 'cookieAnalytics=true; path=/; max-age=31536000';
     document.cookie = 'cookieAdvertising=true; path=/; max-age=31536000';
     
@@ -19,6 +20,8 @@ function setCookieAccepted() {
         cookie_advertising: true,
         cookie_necessary: true
     });
+    
+    return true;
 }
 
 function setCookieRejected() {
@@ -35,6 +38,8 @@ function setCookieRejected() {
         cookie_advertising: false,
         cookie_necessary: true
     });
+    
+    return false;
 }
 
 function setCookieSettings(analytics, advertising) {
@@ -51,6 +56,8 @@ function setCookieSettings(analytics, advertising) {
         cookie_advertising: advertising,
         cookie_necessary: true
     });
+    
+    return { analytics: analytics, advertising: advertising };
 }
 
 // Site blocker functions
