@@ -448,8 +448,8 @@ function initializeCookieConsent() {
 
     // allow initialisation on demand (e.g. from privacy page) and centralise config
     const consentConfig = {
-        // Cookie läuft sofort ab - Banner erscheint bei jedem Refresh (Test-Modus)
-        cookie: { name: 'cc_cookie_fitmypc_v2', expiresAfterDays: -1 },
+        // Cookie läuft 182 Tage (ca. 6 Monate)
+        cookie: { name: 'cc_cookie_fitmypc_v2', expiresAfterDays: 182 },
         guiOptions: {
             consentModal: { layout: 'box inline', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'left', flipButtons: false }
@@ -537,7 +537,7 @@ const maxRetries = 50; // 50 x 200ms = 10 Sekunden Wartezeit
 
 // Lösche alte Cookie-Versionen beim Laden der Seite
 function deleteOldCookies() {
-    const oldCookieNames = ['cc_cookie_fitmypc', 'cc_cookie_fitmypc_test', 'cc_cookie_fitmypc_v2'];
+    const oldCookieNames = ['cc_cookie_fitmypc', 'cc_cookie_fitmypc_test']; // v2 entfernt, da dies das aktuelle Cookie ist
     oldCookieNames.forEach(name => {
         document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         document.cookie = name + '=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
