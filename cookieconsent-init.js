@@ -420,9 +420,10 @@ function initializeCookieConsent() {
             console.log('🎉 onFirstConsent aufgerufen mit:', consent);
             removeSiteBlocker(); 
             // Verarbeite Consent direkt aus dem Callback-Parameter
-            if(consent && consent.categories){
-                const analyticsEnabled = !!consent.categories.analytics;
-                const advertisingEnabled = !!consent.categories.advertising;
+            const categories = consent?.cookie?.categories || consent?.categories;
+            if(categories){
+                const analyticsEnabled = !!categories.find(c => c === 'analytics');
+                const advertisingEnabled = !!categories.find(c => c === 'advertising');
                 
                 console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
                 
@@ -441,6 +442,12 @@ function initializeCookieConsent() {
                     cookie_analytics: analyticsEnabled,
                     cookie_advertising: advertisingEnabled,
                     cookie_necessary: true
+                });
+                
+                console.log('📤 DataLayer Event an GTM gesendet:', {
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled
                 });
                 
                 if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
@@ -452,9 +459,10 @@ function initializeCookieConsent() {
             console.log('✅ onConsent aufgerufen mit:', consent);
             removeSiteBlocker(); 
             // Verarbeite Consent direkt aus dem Callback-Parameter
-            if(consent && consent.categories){
-                const analyticsEnabled = !!consent.categories.analytics;
-                const advertisingEnabled = !!consent.categories.advertising;
+            const categories = consent?.cookie?.categories || consent?.categories;
+            if(categories){
+                const analyticsEnabled = !!categories.find(c => c === 'analytics');
+                const advertisingEnabled = !!categories.find(c => c === 'advertising');
                 
                 console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
                 
@@ -473,6 +481,12 @@ function initializeCookieConsent() {
                     cookie_analytics: analyticsEnabled,
                     cookie_advertising: advertisingEnabled,
                     cookie_necessary: true
+                });
+                
+                console.log('📤 DataLayer Event an GTM gesendet:', {
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled
                 });
                 
                 if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
@@ -484,9 +498,10 @@ function initializeCookieConsent() {
             console.log('🔄 onChange aufgerufen mit:', consent);
             removeSiteBlocker(); 
             // Verarbeite Consent direkt aus dem Callback-Parameter
-            if(consent && consent.categories){
-                const analyticsEnabled = !!consent.categories.analytics;
-                const advertisingEnabled = !!consent.categories.advertising;
+            const categories = consent?.cookie?.categories || consent?.categories;
+            if(categories){
+                const analyticsEnabled = !!categories.find(c => c === 'analytics');
+                const advertisingEnabled = !!categories.find(c => c === 'advertising');
                 
                 console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
                 
@@ -507,7 +522,13 @@ function initializeCookieConsent() {
                     cookie_necessary: true
                 });
                 
-                if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
+                console.log('📤 DataLayer Event an GTM gesendet:', {
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled
+                });
+                
+                if(analyticsEnabled) loadGoogleAnalytics(); else disableAdvertising();
                 if(advertisingEnabled) loadAdvertising(); else disableAdvertising();
             }
             resetInitialChecks(); 
