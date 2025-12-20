@@ -411,7 +411,7 @@ function initializeCookieConsent() {
         // TEST-MODUS: Cookie läuft sofort ab (-1 Tag), damit Banner immer erscheint
         cookie: { name: 'cc_cookie_fitmypc_v2', expiresAfterDays: -1 },
         guiOptions: {
-            consentModal: { layout: 'cloud', position: 'middle center', flipButtons: false },
+            consentModal: { layout: 'box', position: 'middle center', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'middle center', flipButtons: false }
         },
         onFirstConsent: () => { removeSiteBlocker(); applyPreferences(); resetInitialChecks(); },
