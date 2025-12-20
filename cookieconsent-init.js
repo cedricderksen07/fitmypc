@@ -97,6 +97,14 @@ function showSiteBlocker(){
     document.body.appendChild(d);
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
+
+    // Safety timeout: remove blocker after 8 seconds if consent modal fails
+    setTimeout(() => {
+        if(document.getElementById('siteBlocker')) {
+            console.warn('⚠️ Site blocker removed by safety timeout');
+            removeSiteBlocker();
+        }
+    }, 8000);
 }
 
 function removeSiteBlocker(){
@@ -132,8 +140,7 @@ function showFallbackNotice(){
     console.warn('⚠️ Cookie Banner konnte nicht geladen werden - zeige statischen Hinweis');
     
     // Entferne den grauen Blocker
-    const blocker = document.getElementById('siteBlocker');
-    if(blocker) blocker.remove();
+    removeSiteBlocker();
     
     // Erstelle statischen Cookie-Hinweis
     const notice = document.createElement('div');
@@ -169,10 +176,6 @@ function showFallbackNotice(){
         </button>
     `;
     document.body.appendChild(notice);
-    
-    // Erlaube Scrollen wieder
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
     
     // Stelle sicher, dass keine Analytics geladen werden
     window.__cc_consent_given = false;
@@ -220,48 +223,6 @@ function initializeCookieConsent() {
         }
     }
 
-    function centerConsentModal(node){
-        if(!node || !(node instanceof HTMLElement)) return;
-        node.style.setProperty('position','fixed','important');
-        node.style.setProperty('left','50%','important');
-        node.style.setProperty('top','50%','important');
-        node.style.setProperty('right','auto','important');
-        node.style.setProperty('bottom','auto','important');
-        node.style.setProperty('transform','translate(-50%,-50%)','important');
-        node.style.setProperty('z-index','99999','important');
-        node.style.setProperty('margin','0','important');
-        node.style.setProperty('padding','18px','important');
-        node.style.setProperty('box-sizing','border-box','important');
-    }
-
-    const modalSelector = '.cm__popup, .cc-window, .cc-popup, .cc-preferences, .cc-modal';
-    const mo = new MutationObserver((mutations)=>{
-        for(const m of mutations){
-            if(m.type === 'childList'){
-                for(const n of m.addedNodes){
-                    if(n instanceof HTMLElement){
-                        if(n.matches(modalSelector)) centerConsentModal(n);
-                        n.querySelectorAll && n.querySelectorAll(modalSelector).forEach(centerConsentModal);
-                    }
-                }
-            } else if(m.type === 'attributes' && m.target instanceof HTMLElement){
-                const t = m.target;
-                const s = (t.getAttribute('style')||'').replace(/\s+/g,'');
-                if(s.includes('bottom:0') || t.matches(modalSelector)) centerConsentModal(t);
-            }
-        }
-    });
-    mo.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['style','class'] });
-    document.querySelectorAll(modalSelector).forEach(centerConsentModal);
-
-    // periodic retry to catch late modifications
-    let retries = 0;
-    const interval = setInterval(()=>{
-        document.querySelectorAll(modalSelector).forEach(centerConsentModal);
-        retries += 1;
-        if(retries > 30) clearInterval(interval);
-    }, 100);
-
     // Helpers to read stored consent cookie (best-effort)
     function getCookie(name){
         const m = document.cookie.match(new RegExp('(?:^|; )'+name+'=([^;]*)'));
@@ -285,10 +246,8 @@ function initializeCookieConsent() {
         try{
             if(window.CookieConsent && typeof CookieConsent.get === 'function'){
                 const prefs = CookieConsent.get();
-                console.log('📦 CookieConsent.get() Ergebnis:', prefs);
                 if(prefs && prefs.categories && prefs.categories[cat] && typeof prefs.categories[cat].enabled !== 'undefined'){
                     const enabled = !!prefs.categories[cat].enabled;
-                    console.log(`✓ ${cat} (via API):`, enabled);
                     return enabled;
                 }
             }
@@ -297,13 +256,10 @@ function initializeCookieConsent() {
         }
         // Fallback: read cookie
         const parsed = parseConsentCookie();
-        console.log('🍪 Parsed cookie:', parsed);
         if(parsed && parsed.categories && typeof parsed.categories[cat] !== 'undefined'){
             const enabled = !!parsed.categories[cat];
-            console.log(`✓ ${cat} (via cookie):`, enabled);
             return enabled;
         }
-        console.log(`⚠️ ${cat}: nicht gefunden, return false`);
         return false;
     }
 
@@ -363,8 +319,6 @@ function initializeCookieConsent() {
         console.log('🔄 applyPreferences aufgerufen');
         const analyticsEnabled = isCategoryEnabled('analytics');
         const advertisingEnabled = isCategoryEnabled('advertising');
-        console.log('📊 Analytics enabled:', analyticsEnabled);
-        console.log('📢 Advertising enabled:', advertisingEnabled);
         
         // Erstelle Rückgabeobjekt mit Einstellungen
         const preferences = {
@@ -381,17 +335,9 @@ function initializeCookieConsent() {
             cookie_necessary: true
         });
         
-        console.log('📤 DataLayer Event gesendet:', {
-            event: 'cookie_consent_update',
-            cookie_analytics: analyticsEnabled,
-            cookie_advertising: advertisingEnabled
-        });
-        
         if(analyticsEnabled){
-            console.log('✅ Lade Google Analytics...');
             loadGoogleAnalytics();
         } else {
-            console.log('❌ Deaktiviere Google Analytics...');
             disableGoogleAnalytics();
         }
         if(advertisingEnabled){
@@ -438,8 +384,27 @@ function initializeCookieConsent() {
         });
     }
 
-    // Enhance buttons when modal appears and capture initial checks
-    const btnObserver = new MutationObserver((ms)=>{ ms.forEach(m=>{ m.addedNodes && m.addedNodes.forEach(n=>{ if(n instanceof HTMLElement){ if(n.matches && n.matches(modalSelector)) { enhanceButtons(n); captureInitialChecks(n); updateSaveButtonState(n); } n.querySelectorAll && n.querySelectorAll(modalSelector).forEach(el=>{ enhanceButtons(el); captureInitialChecks(el); updateSaveButtonState(el); }); } }); }); });
+    const modalSelector = '.cm__popup, .cc-window, .cc-popup, .cc-preferences, .cc-modal';
+    
+    // Simplified observer: only watch for new nodes to enhance buttons, no aggressive centering
+    const btnObserver = new MutationObserver((ms)=>{ 
+        ms.forEach(m=>{ 
+            m.addedNodes && m.addedNodes.forEach(n=>{ 
+                if(n instanceof HTMLElement){ 
+                    if(n.matches && n.matches(modalSelector)) { 
+                        enhanceButtons(n); 
+                        captureInitialChecks(n); 
+                        updateSaveButtonState(n); 
+                    } 
+                    n.querySelectorAll && n.querySelectorAll(modalSelector).forEach(el=>{ 
+                        enhanceButtons(el); 
+                        captureInitialChecks(el); 
+                        updateSaveButtonState(el); 
+                    }); 
+                } 
+            }); 
+        }); 
+    });
     btnObserver.observe(document.documentElement,{ childList:true, subtree:true });
 
     // Build simple footer strings (avoid nested template expressions)
@@ -542,7 +507,6 @@ function deleteOldCookies() {
         document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         document.cookie = name + '=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     });
-    console.log('🗑️ Alte Cookie-Versionen gelöscht');
 }
 
 // Lösche alte Cookies sofort
