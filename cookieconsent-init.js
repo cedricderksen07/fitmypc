@@ -361,9 +361,6 @@ function initializeCookieConsent() {
         });
     }
 
-    // Apply preferences immediately if user already set them
-    try{ applyPreferences(); }catch(e){}
-
     // Track initial checkbox/radio states inside preferences modal so we can detect
     // when the user enables (adds) an option and adjust the save button style.
     let initialChecks = new WeakMap();
