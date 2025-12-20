@@ -97,14 +97,24 @@
     margin-left: 8px;
 }
 
+/* Button container - vertikale Anordnung */
+.cm__btns, .cm__footer {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+}
+
 /* Prominent action buttons for consent modal */
 .cm__btn--accept {
     background: linear-gradient(180deg,#1565c0,#0d47a1) !important;
     color: #fff !important;
-    padding: 12px 18px !important;
+    padding: 14px 20px !important;
     font-weight: 800 !important;
     border-radius: 10px !important;
     box-shadow: 0 6px 18px rgba(13,71,161,0.22) !important;
+    width: 100% !important;
+    order: -1 !important; /* Akzeptieren-Button als erstes */
 }
 .cm__btn--save {
     background: #0d47a1 !important;
@@ -112,6 +122,7 @@
     padding: 12px 18px !important;
     font-weight: 700 !important;
     border-radius: 8px !important;
+    width: 100% !important;
 }
 .cm__btn--save--active {
     background: #5f6368 !important; /* darker gray when an option is enabled */
@@ -122,9 +133,11 @@
     background: transparent !important;
     border: 2px solid rgba(211,47,47,0.18) !important;
     color: #d32f2f !important;
-    padding: 10px 16px !important;
+    padding: 12px 18px !important;
     font-weight: 700 !important;
     border-radius: 8px !important;
+    width: 100% !important;
+    order: 1 !important; /* Ablehnen-Button als zweites */
 }
 .cm__btn--accept:focus, .cm__btn--save:focus, .cm__btn--reject:focus{
     outline: 3px solid rgba(21,101,192,0.18) !important;
