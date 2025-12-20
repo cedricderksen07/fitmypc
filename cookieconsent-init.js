@@ -419,22 +419,100 @@ function initializeCookieConsent() {
             consentModal: { layout: 'box', position: 'middle center', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'middle center', flipButtons: false }
         },
-        onFirstConsent: () => { 
+        onFirstConsent: (consent) => { 
+            console.log('🎉 onFirstConsent aufgerufen mit:', consent);
             removeSiteBlocker(); 
-            // Warte kurz, damit die Library den Cookie schreiben kann
-            setTimeout(() => applyPreferences(), 100); 
+            // Verarbeite Consent direkt aus dem Callback-Parameter
+            if(consent && consent.categories){
+                const analyticsEnabled = !!consent.categories.analytics;
+                const advertisingEnabled = !!consent.categories.advertising;
+                
+                console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
+                
+                // Update Google Consent Mode v2
+                gtag('consent', 'update', {
+                    'analytics_storage': analyticsEnabled ? 'granted' : 'denied',
+                    'ad_storage': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_user_data': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_personalization': advertisingEnabled ? 'granted' : 'denied'
+                });
+
+                // Push DataLayer Event
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled,
+                    cookie_necessary: true
+                });
+                
+                if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
+                if(advertisingEnabled) loadAdvertising(); else disableAdvertising();
+            }
             resetInitialChecks(); 
         },
-        onConsent: () => { 
+        onConsent: (consent) => { 
+            console.log('✅ onConsent aufgerufen mit:', consent);
             removeSiteBlocker(); 
-            // Warte kurz, damit die Library den Cookie schreiben kann
-            setTimeout(() => applyPreferences(), 100); 
+            // Verarbeite Consent direkt aus dem Callback-Parameter
+            if(consent && consent.categories){
+                const analyticsEnabled = !!consent.categories.analytics;
+                const advertisingEnabled = !!consent.categories.advertising;
+                
+                console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
+                
+                // Update Google Consent Mode v2
+                gtag('consent', 'update', {
+                    'analytics_storage': analyticsEnabled ? 'granted' : 'denied',
+                    'ad_storage': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_user_data': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_personalization': advertisingEnabled ? 'granted' : 'denied'
+                });
+
+                // Push DataLayer Event
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled,
+                    cookie_necessary: true
+                });
+                
+                if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
+                if(advertisingEnabled) loadAdvertising(); else disableAdvertising();
+            }
             resetInitialChecks(); 
         },
-        onChange: () => { 
+        onChange: (consent) => { 
+            console.log('🔄 onChange aufgerufen mit:', consent);
             removeSiteBlocker(); 
-            // Warte kurz, damit die Library den Cookie schreiben kann
-            setTimeout(() => applyPreferences(), 100); 
+            // Verarbeite Consent direkt aus dem Callback-Parameter
+            if(consent && consent.categories){
+                const analyticsEnabled = !!consent.categories.analytics;
+                const advertisingEnabled = !!consent.categories.advertising;
+                
+                console.log('📊 Consent aus Callback:', { analytics: analyticsEnabled, advertising: advertisingEnabled });
+                
+                // Update Google Consent Mode v2
+                gtag('consent', 'update', {
+                    'analytics_storage': analyticsEnabled ? 'granted' : 'denied',
+                    'ad_storage': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_user_data': advertisingEnabled ? 'granted' : 'denied',
+                    'ad_personalization': advertisingEnabled ? 'granted' : 'denied'
+                });
+
+                // Push DataLayer Event
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'cookie_consent_update',
+                    cookie_analytics: analyticsEnabled,
+                    cookie_advertising: advertisingEnabled,
+                    cookie_necessary: true
+                });
+                
+                if(analyticsEnabled) loadGoogleAnalytics(); else disableGoogleAnalytics();
+                if(advertisingEnabled) loadAdvertising(); else disableAdvertising();
+            }
             resetInitialChecks(); 
         },
         categories: {
