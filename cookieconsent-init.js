@@ -246,8 +246,10 @@ function initializeCookieConsent() {
         try{
             if(window.CookieConsent && typeof CookieConsent.get === 'function'){
                 const prefs = CookieConsent.get();
-                if(prefs && prefs.categories && prefs.categories[cat] && typeof prefs.categories[cat].enabled !== 'undefined'){
+                console.log('📊 CookieConsent.get() Ergebnis:', prefs);
+                if(prefs && prefs.categories && prefs.categories[cat]){
                     const enabled = !!prefs.categories[cat].enabled;
+                    console.log(`✓ ${cat} via API: ${enabled}`);
                     return enabled;
                 }
             }
@@ -256,10 +258,13 @@ function initializeCookieConsent() {
         }
         // Fallback: read cookie
         const parsed = parseConsentCookie();
+        console.log('🍪 Cookie parsed:', parsed);
         if(parsed && parsed.categories && typeof parsed.categories[cat] !== 'undefined'){
             const enabled = !!parsed.categories[cat];
+            console.log(`✓ ${cat} via Cookie: ${enabled}`);
             return enabled;
         }
+        console.log(`⚠️ ${cat} nicht gefunden, default: false`);
         return false;
     }
 
@@ -414,9 +419,24 @@ function initializeCookieConsent() {
             consentModal: { layout: 'box', position: 'middle center', flipButtons: false },
             preferencesModal: { layout: 'box', position: 'middle center', flipButtons: false }
         },
-        onFirstConsent: () => { removeSiteBlocker(); applyPreferences(); resetInitialChecks(); },
-        onConsent: () => { removeSiteBlocker(); applyPreferences(); resetInitialChecks(); },
-        onChange: () => { removeSiteBlocker(); applyPreferences(); resetInitialChecks(); },
+        onFirstConsent: () => { 
+            removeSiteBlocker(); 
+            // Warte kurz, damit die Library den Cookie schreiben kann
+            setTimeout(() => applyPreferences(), 100); 
+            resetInitialChecks(); 
+        },
+        onConsent: () => { 
+            removeSiteBlocker(); 
+            // Warte kurz, damit die Library den Cookie schreiben kann
+            setTimeout(() => applyPreferences(), 100); 
+            resetInitialChecks(); 
+        },
+        onChange: () => { 
+            removeSiteBlocker(); 
+            // Warte kurz, damit die Library den Cookie schreiben kann
+            setTimeout(() => applyPreferences(), 100); 
+            resetInitialChecks(); 
+        },
         categories: {
             necessary: { readOnly: true, enabled: true },
             analytics: { enabled: false, autoClear: { cookies: [{ name: /^(_ga|_gid)/ }] } },
