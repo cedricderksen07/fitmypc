@@ -268,11 +268,6 @@ function initializeCookieConsent() {
         if(window.__cc_ga_loaded) return;
         console.log('✅ Analytics akzeptiert - sende Event an Google Tag Manager');
         
-        // Google Consent Mode v2 Update
-        gtag('consent', 'update', {
-            'analytics_storage': 'granted'
-        });
-
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'analytics_accepted'});
@@ -284,13 +279,6 @@ function initializeCookieConsent() {
         if(window.__cc_ads_loaded) return;
         console.log('✅ Advertising akzeptiert - sende Event an Google Tag Manager');
         
-        // Google Consent Mode v2 Update
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted'
-        });
-
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'advertising_accepted'});
@@ -301,13 +289,6 @@ function initializeCookieConsent() {
     function disableAdvertising(){
         console.log('❌ Advertising abgelehnt');
         
-        // Google Consent Mode v2 Update
-        gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied'
-        });
-
         // Sende Event an GTM
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({'event': 'advertising_rejected'});
@@ -320,19 +301,27 @@ function initializeCookieConsent() {
         const analyticsEnabled = isCategoryEnabled('analytics');
         const advertisingEnabled = isCategoryEnabled('advertising');
         
-        // Erstelle Rückgabeobjekt mit Einstellungen
-        const preferences = {
-            analytics: analyticsEnabled ? 'accepted' : 'rejected',
-            advertising: advertisingEnabled ? 'accepted' : 'rejected'
-        };
-        
-        // Sende individuelle Einstellungen an GTM mit boolean-Werten (GTM-kompatibel)
+        // 1. Update Google Consent Mode v2 FIRST (Critical for GTM)
+        gtag('consent', 'update', {
+            'analytics_storage': analyticsEnabled ? 'granted' : 'denied',
+            'ad_storage': advertisingEnabled ? 'granted' : 'denied',
+            'ad_user_data': advertisingEnabled ? 'granted' : 'denied',
+            'ad_personalization': advertisingEnabled ? 'granted' : 'denied'
+        });
+
+        // 2. Push DataLayer Event
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
             event: 'cookie_consent_update',
             cookie_analytics: analyticsEnabled,
             cookie_advertising: advertisingEnabled,
             cookie_necessary: true
+        });
+        
+        console.log('📤 DataLayer Event gesendet:', {
+            event: 'cookie_consent_update',
+            cookie_analytics: analyticsEnabled,
+            cookie_advertising: advertisingEnabled
         });
         
         if(analyticsEnabled){
@@ -345,6 +334,12 @@ function initializeCookieConsent() {
         } else {
             disableAdvertising();
         }
+        
+        // Erstelle Rückgabeobjekt mit Einstellungen
+        const preferences = {
+            analytics: analyticsEnabled ? 'accepted' : 'rejected',
+            advertising: advertisingEnabled ? 'accepted' : 'rejected'
+        };
         
         // Gebe Einstellungen zurück
         return preferences;
